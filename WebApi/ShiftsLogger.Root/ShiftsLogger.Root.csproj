@@ -12,7 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShiftsLogger.Repository.Common\ShiftsLogger.Repository.Common.csproj" />
+    <ProjectReference Include="..\ShiftsLogger.Repository\ShiftsLogger.Repository.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Service.Common\ShiftsLogger.Service.Common.csproj" />
+    <ProjectReference Include="..\ShiftsLogger.Service\ShiftsLogger.Service.csproj" />
   </ItemGroup>
 
 </Project>
