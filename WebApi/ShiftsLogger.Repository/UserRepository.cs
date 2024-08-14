@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using ShiftsLogger.DAL;
 using ShiftsLogger.Model;
-using ShiftsLogger.Model.DTOs;
 using ShiftsLogger.Repository.Common;
 
 namespace ShiftsLogger.Repository;
@@ -15,15 +15,15 @@ public class UserRepository : IUserRepository
         _context = context;
         _mapper = mapper;
     }
-    public async Task<ApiResponse<List<UserDto>>> GetAllAsync()
+    public async Task<ApiResponse<List<User>>> GetAllAsync()
     {
-        var response = new ApiResponse<List<UserDto>>();
+        var response = new ApiResponse<List<User>>();
 
         try
         {
             var users = await _context.Users.ToListAsync();
 
-            response.Data = _mapper.Map<List<UserDto>>(users);
+            response.Data = _mapper.Map<List<User>>(users);
             response.Success = true;
         }
         catch (Exception ex)

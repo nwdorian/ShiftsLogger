@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using ShiftsLogger.Model.DTOs;
-using ShiftsLogger.Model.Entities;
+using ShiftsLogger.DAL;
+using ShiftsLogger.Model;
 
 namespace ShiftsLogger.Repository.Profiles;
 public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<User, UserDto>();
+        CreateMap<UserEntity, User>();
     }
 }

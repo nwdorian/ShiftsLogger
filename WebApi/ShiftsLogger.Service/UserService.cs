@@ -1,5 +1,4 @@
 ﻿using ShiftsLogger.Model;
-using ShiftsLogger.Model.DTOs;
 using ShiftsLogger.Repository.Common;
 using ShiftsLogger.Service.Common;
 
@@ -13,7 +12,7 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<ApiResponse<List<UserDto>>> GetAllAsync()
+    public async Task<ApiResponse<List<User>>> GetAllAsync()
     {
         return await _userRepository.GetAllAsync();
     }

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ShiftsLogger.Model\ShiftsLogger.Model.csproj" />
+  </ItemGroup>
+
 </Project>

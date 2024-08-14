@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using ShiftsLogger.Model.Entities;
 
-namespace ShiftsLogger.Repository;
+namespace ShiftsLogger.DAL;
 public class ShiftsContext : DbContext
 {
-    public DbSet<User> Users { get; set; }
-    public DbSet<Shift> Shifts { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<ShiftEntity> Shifts { get; set; }
 
     public ShiftsContext(DbContextOptions<ShiftsContext> options) : base(options)
     {

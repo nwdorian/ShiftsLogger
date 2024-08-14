@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
+using ShiftsLogger.DAL;
 using ShiftsLogger.Repository;
 using ShiftsLogger.Repository.Profiles;
 
@@ -10,5 +11,6 @@ public class RootModule : Module
     {
         builder.RegisterAutoMapper(typeof(UserProfile).Assembly);
         builder.RegisterModule<RepositoryModule>();
+        builder.RegisterModule<ContextModule>();
     }
 }

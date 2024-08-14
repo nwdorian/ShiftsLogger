@@ -1,5 +1,5 @@
-﻿namespace ShiftsLogger.Model.DTOs;
-public class UserDto
+﻿namespace ShiftsLogger.Model;
+public class User
 {
     public Guid Id { get; set; }
     public Guid ShiftId { get; set; }

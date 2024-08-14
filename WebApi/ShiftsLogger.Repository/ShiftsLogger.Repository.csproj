@@ -8,14 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ShiftsLogger.DAL\ShiftsLogger.DAL.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Model\ShiftsLogger.Model.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Repository.Common\ShiftsLogger.Repository.Common.csproj" />
   </ItemGroup>
