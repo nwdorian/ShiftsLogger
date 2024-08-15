@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using ShiftsLogger.DAL.Entities;
 
 namespace ShiftsLogger.DAL;
 public class ShiftsContext : DbContext

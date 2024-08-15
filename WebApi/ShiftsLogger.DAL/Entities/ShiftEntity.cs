@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShiftsLogger.DAL;
+namespace ShiftsLogger.DAL.Entities;
 [Table("Shift")]
 public class ShiftEntity
 {

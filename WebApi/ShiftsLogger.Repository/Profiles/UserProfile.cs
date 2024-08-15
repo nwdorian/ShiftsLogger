@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ShiftsLogger.DAL;
+using ShiftsLogger.DAL.Entities;
 using ShiftsLogger.Model;
 
 namespace ShiftsLogger.Repository.Profiles;
