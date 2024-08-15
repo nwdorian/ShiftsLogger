@@ -33,7 +33,7 @@ public class UserController : ControllerBase
         return BadRequest(response.Message);
     }
 
-    [HttpGet]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
         var response = await _userService.GetByIdAsync(id);
@@ -75,7 +75,7 @@ public class UserController : ControllerBase
         return BadRequest(response.Message);
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(Guid id, UserUpdate userUpdate)
     {
         var user = _mapper.Map<User>(userUpdate);

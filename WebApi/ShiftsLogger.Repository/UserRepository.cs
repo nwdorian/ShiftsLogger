@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.DAL;
+using ShiftsLogger.DAL.Entities;
 using ShiftsLogger.Model;
 using ShiftsLogger.Repository.Common;
 
@@ -75,7 +76,8 @@ public class UserRepository : IUserRepository
         var response = new ApiResponse<User>();
         try
         {
-            _context.Add(user);
+            var userEntity = _mapper.Map<UserEntity>(user);
+            _context.Add(userEntity);
             await _context.SaveChangesAsync();
 
             response.Data = user;
@@ -94,7 +96,8 @@ public class UserRepository : IUserRepository
         var response = new ApiResponse<User>();
         try
         {
-            _context.Update(user);
+            var userEntity = _mapper.Map<UserEntity>(user);
+            _context.Update(userEntity);
             await _context.SaveChangesAsync();
 
             response.Message = "Succesfully deleted!";
@@ -114,7 +117,8 @@ public class UserRepository : IUserRepository
 
         try
         {
-            _context.Update(user);
+            var userEntity = _mapper.Map<UserEntity>(user);
+            _context.Update(userEntity);
             await _context.SaveChangesAsync();
 
             response.Message = "Successfully updated!";

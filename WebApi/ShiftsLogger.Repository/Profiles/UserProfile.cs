@@ -7,6 +7,6 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<UserEntity, User>();
+        CreateMap<UserEntity, User>().ReverseMap();
     }
 }
