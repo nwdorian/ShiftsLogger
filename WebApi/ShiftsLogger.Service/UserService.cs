@@ -16,4 +16,9 @@ public class UserService : IUserService
     {
         return await _userRepository.GetAllAsync();
     }
+
+    public async Task<ApiResponse<User>> GetByIdAsync(Guid id)
+    {
+        return await _userRepository.GetById(id);
+    }
 }
