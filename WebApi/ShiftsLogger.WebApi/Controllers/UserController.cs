@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using ShiftsLogger.Model;
 using ShiftsLogger.Service.Common;
 using ShiftsLogger.WebApi.RestModels;
 
@@ -41,6 +42,49 @@ public class UserController : ControllerBase
         {
             var user = _mapper.Map<UserRead>(response.Data);
             return Ok(user);
+        }
+
+        return BadRequest(response.Message);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync(UserCreate userCreate)
+    {
+        var user = _mapper.Map<User>(userCreate);
+
+        var response = await _userService.CreateAsync(user);
+
+        if (response.Success)
+        {
+            return CreatedAtAction("GetById", new { Id = user.Id }, user);
+        }
+
+        return BadRequest(response.Message);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAsync(Guid id)
+    {
+        var response = await _userService.DeleteAsync(id);
+
+        if (response.Success)
+        {
+            return Ok(response.Message);
+        }
+
+        return BadRequest(response.Message);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync(Guid id, UserUpdate userUpdate)
+    {
+        var user = _mapper.Map<User>(userUpdate);
+
+        var response = await _userService.UpdateAsync(id, user);
+
+        if (response.Success)
+        {
+            return Ok(response.Message);
         }
 
         return BadRequest(response.Message);

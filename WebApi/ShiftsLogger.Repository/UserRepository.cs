@@ -64,7 +64,65 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository GetById: {ex.Message}";
+            response.Message = $"Error in UserRepository GetByIdAsync: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
+
+    public async Task<ApiResponse<User>> CreateAsync(User user)
+    {
+        var response = new ApiResponse<User>();
+        try
+        {
+            _context.Add(user);
+            await _context.SaveChangesAsync();
+
+            response.Data = user;
+            response.Success = true;
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in UserRepository CreateAsync: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
+
+    public async Task<ApiResponse<User>> DeleteAsync(User user)
+    {
+        var response = new ApiResponse<User>();
+        try
+        {
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            response.Message = "Succesfully deleted!";
+            response.Success = true;
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in UserRepository DeleteAsync: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
+
+    public async Task<ApiResponse<User>> UpdateAsync(User user)
+    {
+        var response = new ApiResponse<User>();
+
+        try
+        {
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            response.Message = "Successfully updated!";
+            response.Success = true;
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in UserRepository DeleteAsync: {ex.Message}";
             response.Success = false;
         }
         return response;
