@@ -1,7 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
-using ShiftsLogger.Repository.Profiles;
 using ShiftsLogger.Root;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +11,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder.RegisterInstance(builder.Configuration).As<IConfiguration>();
-    containerBuilder.RegisterAutoMapper(typeof(UserProfile).Assembly);
+    containerBuilder.RegisterAutoMapper(typeof(Program).Assembly);
     containerBuilder.RegisterModule<RootModule>();
 });
 
