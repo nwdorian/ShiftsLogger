@@ -43,8 +43,8 @@ public class UserService : IUserService
         }
 
         var user = response.Data;
-
         user!.IsActive = false;
+
         return await _userRepository.DeleteAsync(user);
     }
 
