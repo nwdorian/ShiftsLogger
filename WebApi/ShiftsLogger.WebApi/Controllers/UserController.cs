@@ -26,7 +26,7 @@ public class UserController : ControllerBase
 
         if (response.Success)
         {
-            var users = _mapper.Map<UserRead>(response.Data);
+            var users = _mapper.Map<List<UserRead>>(response.Data);
             return Ok(users);
         }
 
