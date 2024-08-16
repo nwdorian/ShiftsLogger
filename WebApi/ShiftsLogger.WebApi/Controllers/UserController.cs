@@ -10,17 +10,17 @@ namespace ShiftsLogger.WebApi.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IMapper _mapper;
     private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
-    public UserController(IMapper mapper, IUserService userService)
+    public UserController(IUserService userService, IMapper mapper)
     {
-        _mapper = mapper;
         _userService = userService;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAll()
     {
         var response = await _userService.GetAllAsync();
 
@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(Guid id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var response = await _userService.GetByIdAsync(id);
 
@@ -48,7 +48,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(UserCreate userCreate)
+    public async Task<IActionResult> Create(UserCreate userCreate)
     {
         var user = _mapper.Map<User>(userCreate);
 
@@ -56,14 +56,14 @@ public class UserController : ControllerBase
 
         if (response.Success)
         {
-            return CreatedAtAction("GetById", new { Id = user.Id }, user);
+            return CreatedAtAction(nameof(GetById), new { Id = user.Id }, user);
         }
 
         return BadRequest(response.Message);
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteAsync(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
     {
         var response = await _userService.DeleteAsync(id);
 
@@ -76,7 +76,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(Guid id, UserUpdate userUpdate)
+    public async Task<IActionResult> Update(Guid id, UserUpdate userUpdate)
     {
         var user = _mapper.Map<User>(userUpdate);
 
