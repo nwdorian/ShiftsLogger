@@ -56,7 +56,8 @@ public class UserController : ControllerBase
 
         if (response.Success)
         {
-            return CreatedAtAction(nameof(GetById), new { Id = user.Id }, user);
+            var userRead = _mapper.Map<UserRead>(response.Data);
+            return CreatedAtAction(nameof(GetById), new { Id = user.Id }, userRead);
         }
 
         return BadRequest(response.Message);
