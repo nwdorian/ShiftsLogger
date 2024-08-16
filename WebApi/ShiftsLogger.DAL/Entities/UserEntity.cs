@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShiftsLogger.Model.Entities;
-public class User
+namespace ShiftsLogger.DAL.Entities;
+[Table("User")]
+public class UserEntity
 {
     public Guid Id { get; set; }
     public Guid ShiftId { get; set; }
@@ -21,5 +22,5 @@ public class User
     public DateTime DateCreated { get; set; }
     [Required]
     public DateTime DateUpdated { get; set; }
-    public Shift Shift { get; set; } = null!;
+    public ShiftEntity Shift { get; set; } = null!;
 }

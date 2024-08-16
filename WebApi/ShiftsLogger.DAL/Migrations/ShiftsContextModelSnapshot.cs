@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShiftsLogger.Repository;
+using ShiftsLogger.DAL;
 
 #nullable disable
 
-namespace ShiftsLogger.Repository.Migrations
+namespace ShiftsLogger.DAL.Migrations
 {
     [DbContext(typeof(ShiftsContext))]
     partial class ShiftsContextModelSnapshot : ModelSnapshot
@@ -17,12 +17,12 @@ namespace ShiftsLogger.Repository.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ShiftsLogger.Model.Entities.Shift", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.ShiftEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,7 +48,7 @@ namespace ShiftsLogger.Repository.Migrations
                     b.ToTable("Shift");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Model.Entities.User", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,9 +85,9 @@ namespace ShiftsLogger.Repository.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Model.Entities.User", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.UserEntity", b =>
                 {
-                    b.HasOne("ShiftsLogger.Model.Entities.Shift", "Shift")
+                    b.HasOne("ShiftsLogger.DAL.ShiftEntity", "Shift")
                         .WithMany("Users")
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -96,7 +96,7 @@ namespace ShiftsLogger.Repository.Migrations
                     b.Navigation("Shift");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Model.Entities.Shift", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.ShiftEntity", b =>
                 {
                     b.Navigation("Users");
                 });

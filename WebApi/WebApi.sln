@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftsLogger.Common", "Shif
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftsLogger.Model", "ShiftsLogger.Model\ShiftsLogger.Model.csproj", "{7D58E7C0-A21D-4E5C-A866-95EB26451CE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiftsLogger.Root", "ShiftsLogger.Root\ShiftsLogger.Root.csproj", "{D2B31534-3250-4DCB-85A8-AC3D09EF1F65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftsLogger.Root", "ShiftsLogger.Root\ShiftsLogger.Root.csproj", "{D2B31534-3250-4DCB-85A8-AC3D09EF1F65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiftsLogger.DAL", "ShiftsLogger.DAL\ShiftsLogger.DAL.csproj", "{9B1AEE95-A08A-483B-9A97-A8DFF85D070F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{D2B31534-3250-4DCB-85A8-AC3D09EF1F65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2B31534-3250-4DCB-85A8-AC3D09EF1F65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2B31534-3250-4DCB-85A8-AC3D09EF1F65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B1AEE95-A08A-483B-9A97-A8DFF85D070F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B1AEE95-A08A-483B-9A97-A8DFF85D070F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B1AEE95-A08A-483B-9A97-A8DFF85D070F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B1AEE95-A08A-483B-9A97-A8DFF85D070F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
