@@ -56,7 +56,8 @@ public class ShiftController : ControllerBase
 
         if (response.Success)
         {
-            return CreatedAtAction(nameof(GetById), new { Id = shift.Id }, shift);
+            var shiftRead = _mapper.Map<ShiftRead>(response.Data);
+            return CreatedAtAction(nameof(GetById), new { Id = shift.Id }, shiftRead);
         }
 
         return BadRequest(response.Message);

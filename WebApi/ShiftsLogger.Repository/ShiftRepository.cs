@@ -73,7 +73,7 @@ public class ShiftRepository : IShiftRepository
         var response = new ApiResponse<Shift>();
         try
         {
-            var shiftEntity = _mapper.Map<UserEntity>(shift);
+            var shiftEntity = _mapper.Map<ShiftEntity>(shift);
             _context.Add(shiftEntity);
             await _context.SaveChangesAsync();
 
