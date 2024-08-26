@@ -43,7 +43,14 @@ public class UserService : IUserService
         }
 
         var user = response.Data;
-        user!.IsActive = false;
+
+        if (user is null)
+        {
+            response.Message = "User is null";
+            return response;
+        }
+
+        user.IsActive = false;
 
         return await _userRepository.DeleteAsync(user);
     }
@@ -58,8 +65,36 @@ public class UserService : IUserService
             return response;
         }
 
-        user.DateUpdated = DateTime.Now;
+        var existingUser = response.Data;
 
-        return await _userRepository.UpdateAsync(user);
+        if (existingUser is null)
+        {
+            response.Message = "User is null";
+            return response;
+        }
+
+        if (user.ShiftId != Guid.Empty)
+        {
+            existingUser.ShiftId = user.ShiftId;
+        }
+
+        if (!string.IsNullOrEmpty(user.FirstName))
+        {
+            existingUser.FirstName = user.FirstName;
+        }
+
+        if (!string.IsNullOrEmpty(user.LastName))
+        {
+            existingUser.LastName = user.LastName;
+        }
+
+        if (!string.IsNullOrEmpty(user.Email))
+        {
+            existingUser.Email = user.Email;
+        }
+
+        existingUser.DateUpdated = DateTime.Now;
+
+        return await _userRepository.UpdateAsync(existingUser);
     }
 }

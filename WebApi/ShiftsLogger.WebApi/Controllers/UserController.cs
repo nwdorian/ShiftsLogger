@@ -6,7 +6,7 @@ using ShiftsLogger.WebApi.RestModels;
 
 namespace ShiftsLogger.WebApi.Controllers;
 
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {

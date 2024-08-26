@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.DAL;
 using ShiftsLogger.DAL.Entities;
@@ -22,7 +23,10 @@ public class UserRepository : IUserRepository
 
         try
         {
-            var users = await _context.Users.Where(u => u.IsActive == true).ToListAsync();
+            var users = await _context.Users
+                .Where(u => u.IsActive == true)
+                .ProjectTo<User>(_mapper.ConfigurationProvider)
+                .ToListAsync();
 
             if (users.Count == 0)
             {
@@ -31,7 +35,7 @@ public class UserRepository : IUserRepository
             }
             else
             {
-                response.Data = _mapper.Map<List<User>>(users);
+                response.Data = users;
                 response.Success = true;
             }
         }
@@ -50,7 +54,10 @@ public class UserRepository : IUserRepository
 
         try
         {
-            var user = await _context.Users.Where(u => u.IsActive == true).SingleOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users
+                .Where(u => u.IsActive == true)
+                .ProjectTo<User>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync(u => u.Id == id);
 
             if (user is null)
             {

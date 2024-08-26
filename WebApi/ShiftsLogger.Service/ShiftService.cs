@@ -42,7 +42,13 @@ public class ShiftService : IShiftService
         }
 
         var shift = response.Data;
-        shift!.IsActive = false;
+
+        if (shift is null)
+        {
+            response.Message = "Shift is null";
+            return response;
+        }
+        shift.IsActive = false;
 
         return await _shiftRepository.DeleteAsync(shift);
     }
@@ -58,8 +64,26 @@ public class ShiftService : IShiftService
             return response;
         }
 
-        shift.DateUpdated = DateTime.Now;
+        var existingShift = response.Data;
 
-        return await _shiftRepository.UpdateAsync(shift);
+        if (existingShift is null)
+        {
+            response.Message = "Shift is null";
+            return response;
+        }
+
+        if (shift.StartTime != DateTime.MinValue)
+        {
+            existingShift.StartTime = shift.StartTime;
+        }
+
+        if (shift.EndTime != DateTime.MinValue)
+        {
+            existingShift.EndTime = shift.EndTime;
+        }
+
+        existingShift.DateUpdated = DateTime.Now;
+
+        return await _shiftRepository.UpdateAsync(existingShift);
     }
 }
