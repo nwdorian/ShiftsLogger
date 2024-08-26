@@ -15,7 +15,16 @@ public class ContextModule : Module
             return new ShiftsContext(optionsBuilder.Options);
         })
             .AsSelf()
-            .As<DbContext>()
             .InstancePerLifetimeScope();
+
+        builder.RegisterType<DbInitialiser>().AsSelf().InstancePerDependency();
+
+        builder.RegisterBuildCallback(async container =>
+        {
+            using var scope = container.BeginLifetimeScope();
+            var initialiser = scope.Resolve<DbInitialiser>();
+            await initialiser.RunAsync();
+
+        });
     }
 }

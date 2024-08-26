@@ -5,6 +5,7 @@ namespace ShiftsLogger.DAL.Entities;
 [Table("Shift")]
 public class ShiftEntity
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public Guid Id { get; set; }
     [Required]
     public DateTime StartTime { get; set; }

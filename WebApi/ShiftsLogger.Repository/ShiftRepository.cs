@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.DAL;
 using ShiftsLogger.DAL.Entities;
@@ -21,7 +22,10 @@ public class ShiftRepository : IShiftRepository
         var response = new ApiResponse<List<Shift>>();
         try
         {
-            var shifts = await _context.Shifts.Where(s => s.IsActive == true).ToListAsync();
+            var shifts = await _context.Shifts
+                .Where(s => s.IsActive == true)
+                .ProjectTo<Shift>(_mapper.ConfigurationProvider)
+                .ToListAsync();
 
             if (shifts.Count == 0)
             {
@@ -48,7 +52,10 @@ public class ShiftRepository : IShiftRepository
         var response = new ApiResponse<Shift>();
         try
         {
-            var shift = await _context.Shifts.Where(s => s.IsActive == true).SingleOrDefaultAsync(s => s.Id == id);
+            var shift = await _context.Shifts
+                .Where(s => s.IsActive == true)
+                .ProjectTo<Shift>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync(s => s.Id == id);
 
             if (shift is null)
             {
@@ -93,7 +100,7 @@ public class ShiftRepository : IShiftRepository
         var response = new ApiResponse<Shift>();
         try
         {
-            var shiftEntity = _mapper.Map<UserEntity>(shift);
+            var shiftEntity = _mapper.Map<ShiftEntity>(shift);
             _context.Update(shiftEntity);
             await _context.SaveChangesAsync();
 
@@ -114,7 +121,7 @@ public class ShiftRepository : IShiftRepository
         var response = new ApiResponse<Shift>();
         try
         {
-            var shiftEntity = _mapper.Map<UserEntity>(shift);
+            var shiftEntity = _mapper.Map<ShiftEntity>(shift);
             _context.Update(shiftEntity);
             await _context.SaveChangesAsync();
 

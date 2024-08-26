@@ -22,10 +22,9 @@ namespace ShiftsLogger.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ShiftsLogger.DAL.ShiftEntity", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.ShiftEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -48,10 +47,9 @@ namespace ShiftsLogger.DAL.Migrations
                     b.ToTable("Shift");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.DAL.UserEntity", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -85,9 +83,9 @@ namespace ShiftsLogger.DAL.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.DAL.UserEntity", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserEntity", b =>
                 {
-                    b.HasOne("ShiftsLogger.DAL.ShiftEntity", "Shift")
+                    b.HasOne("ShiftsLogger.DAL.Entities.ShiftEntity", "Shift")
                         .WithMany("Users")
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -96,7 +94,7 @@ namespace ShiftsLogger.DAL.Migrations
                     b.Navigation("Shift");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.DAL.ShiftEntity", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.ShiftEntity", b =>
                 {
                     b.Navigation("Users");
                 });

@@ -10,5 +10,6 @@ public class ShiftProfile : Profile
     {
         CreateMap<Shift, ShiftRead>();
         CreateMap<ShiftCreate, Shift>();
+        CreateMap<ShiftUpdate, Shift>();
     }
 }

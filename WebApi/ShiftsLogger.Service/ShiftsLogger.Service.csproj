@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ShiftsLogger.Model\ShiftsLogger.Model.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Repository.Common\ShiftsLogger.Repository.Common.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Service.Common\ShiftsLogger.Service.Common.csproj" />
   </ItemGroup>
