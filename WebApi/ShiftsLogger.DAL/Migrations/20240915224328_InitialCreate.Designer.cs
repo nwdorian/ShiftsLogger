@@ -12,7 +12,7 @@ using ShiftsLogger.DAL;
 namespace ShiftsLogger.DAL.Migrations
 {
     [DbContext(typeof(ShiftsContext))]
-    [Migration("20240814230443_InitialCreate")]
+    [Migration("20240915224328_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,10 +25,9 @@ namespace ShiftsLogger.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ShiftsLogger.DAL.ShiftEntity", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.ShiftEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -48,13 +47,12 @@ namespace ShiftsLogger.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shift");
+                    b.ToTable("Shift", (string)null);
                 });
 
-            modelBuilder.Entity("ShiftsLogger.DAL.UserEntity", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -65,10 +63,12 @@ namespace ShiftsLogger.DAL.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsActive")
@@ -76,32 +76,61 @@ namespace ShiftsLogger.DAL.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.HasKey("Id");
+
+                    b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserShiftEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ShiftId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ShiftId");
 
-                    b.ToTable("User");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserShift", (string)null);
                 });
 
-            modelBuilder.Entity("ShiftsLogger.DAL.UserEntity", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserShiftEntity", b =>
                 {
-                    b.HasOne("ShiftsLogger.DAL.ShiftEntity", "Shift")
+                    b.HasOne("ShiftsLogger.DAL.Entities.ShiftEntity", "Shift")
                         .WithMany("Users")
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ShiftsLogger.DAL.Entities.UserEntity", "User")
+                        .WithMany("Shifts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Shift");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.DAL.ShiftEntity", b =>
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.ShiftEntity", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserEntity", b =>
+                {
+                    b.Navigation("Shifts");
                 });
 #pragma warning restore 612, 618
         }

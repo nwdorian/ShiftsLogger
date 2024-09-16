@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.DAL.Entities;
+using System.Reflection;
 
 namespace ShiftsLogger.DAL;
 public class ShiftsContext : DbContext
@@ -10,4 +11,10 @@ public class ShiftsContext : DbContext
     }
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<ShiftEntity> Shifts { get; set; }
+    public DbSet<UserShiftEntity> UserShift { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
 }
