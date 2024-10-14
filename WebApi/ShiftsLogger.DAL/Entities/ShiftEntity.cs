@@ -7,5 +7,5 @@ public class ShiftEntity
     public bool IsActive { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime DateUpdated { get; set; }
-    public ICollection<UserShiftEntity>? Users { get; set; }
+    public ICollection<UserEntity>? Users { get; set; }
 }

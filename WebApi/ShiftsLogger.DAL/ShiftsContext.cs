@@ -11,7 +11,6 @@ public class ShiftsContext : DbContext
     }
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<ShiftEntity> Shifts { get; set; }
-    public DbSet<UserShiftEntity> UserShift { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

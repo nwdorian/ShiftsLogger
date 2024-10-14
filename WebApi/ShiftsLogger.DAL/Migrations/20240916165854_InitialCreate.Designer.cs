@@ -12,7 +12,7 @@ using ShiftsLogger.DAL;
 namespace ShiftsLogger.DAL.Migrations
 {
     [DbContext(typeof(ShiftsContext))]
-    [Migration("20240915224328_InitialCreate")]
+    [Migration("20240916165854_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -84,53 +84,36 @@ namespace ShiftsLogger.DAL.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserShiftEntity", b =>
+            modelBuilder.Entity("UserShift", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("ShiftsId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ShiftId");
 
-                    b.Property<Guid>("ShiftId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("UserId");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasKey("ShiftsId", "UsersId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("UsersId");
 
-                    b.HasIndex("ShiftId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserShift", (string)null);
+                    b.ToTable("UserShift");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserShiftEntity", b =>
+            modelBuilder.Entity("UserShift", b =>
                 {
-                    b.HasOne("ShiftsLogger.DAL.Entities.ShiftEntity", "Shift")
-                        .WithMany("Users")
-                        .HasForeignKey("ShiftId")
+                    b.HasOne("ShiftsLogger.DAL.Entities.ShiftEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ShiftsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShiftsLogger.DAL.Entities.UserEntity", "User")
-                        .WithMany("Shifts")
-                        .HasForeignKey("UserId")
+                    b.HasOne("ShiftsLogger.DAL.Entities.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Shift");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShiftsLogger.DAL.Entities.ShiftEntity", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("ShiftsLogger.DAL.Entities.UserEntity", b =>
-                {
-                    b.Navigation("Shifts");
                 });
 #pragma warning restore 612, 618
         }

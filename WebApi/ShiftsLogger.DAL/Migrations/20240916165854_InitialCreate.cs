@@ -48,13 +48,12 @@ namespace ShiftsLogger.DAL.Migrations
                 name: "UserShift",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShiftId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ShiftId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserShift", x => x.Id);
+                    table.PrimaryKey("PK_UserShift", x => new { x.ShiftId, x.UserId });
                     table.ForeignKey(
                         name: "FK_UserShift_Shift_ShiftId",
                         column: x => x.ShiftId,
@@ -68,11 +67,6 @@ namespace ShiftsLogger.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserShift_ShiftId",
-                table: "UserShift",
-                column: "ShiftId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserShift_UserId",

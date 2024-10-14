@@ -9,6 +9,14 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         builder.ToTable("User");
 
+        builder.HasMany(u => u.Shifts)
+            .WithMany(s => s.Users)
+            .UsingEntity("UserShift", j =>
+            {
+                j.Property("UsersId").HasColumnName("UserId");
+                j.Property("ShiftsId").HasColumnName("ShiftId");
+            });
+
         builder.Property(u => u.Id)
             .ValueGeneratedNever();
 
