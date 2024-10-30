@@ -73,11 +73,6 @@ public class UserService : IUserService
             return response;
         }
 
-        if (user.ShiftId != Guid.Empty)
-        {
-            existingUser.ShiftId = user.ShiftId;
-        }
-
         if (!string.IsNullOrEmpty(user.FirstName))
         {
             existingUser.FirstName = user.FirstName;
