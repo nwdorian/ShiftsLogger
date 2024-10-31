@@ -135,4 +135,24 @@ public class ShiftRepository : IShiftRepository
         }
         return response;
     }
+
+    public async Task<ApiResponse<List<Shift>>> CreateManyAsync(List<Shift> shifts)
+    {
+        var response = new ApiResponse<List<Shift>>();
+        try
+        {
+            var shiftEntities = _mapper.Map<List<ShiftEntity>>(shifts);
+            _context.AddRange(shiftEntities);
+            await _context.SaveChangesAsync();
+
+            response.Data = shifts;
+            response.Success = true;
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in ShiftRepository CreateManyAsync: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
 }

@@ -7,5 +7,6 @@ public class ServiceModule : Module
     {
         builder.RegisterType<UserService>().AsImplementedInterfaces().InstancePerDependency();
         builder.RegisterType<ShiftService>().AsImplementedInterfaces().InstancePerDependency();
+        builder.RegisterType<SeedingService>().AsImplementedInterfaces().InstancePerDependency();
     }
 }

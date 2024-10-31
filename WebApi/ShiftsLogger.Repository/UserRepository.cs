@@ -138,4 +138,25 @@ public class UserRepository : IUserRepository
         }
         return response;
     }
+
+    public async Task<ApiResponse<List<User>>> CreateManyAsync(List<User> users)
+    {
+        var response = new ApiResponse<List<User>>();
+
+        try
+        {
+            var userEntities = _mapper.Map<List<UserEntity>>(users);
+            _context.AddRange(userEntities);
+            await _context.SaveChangesAsync();
+
+            response.Data = users;
+            response.Success = true;
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in UserRepository CreateManyAsync: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
 }

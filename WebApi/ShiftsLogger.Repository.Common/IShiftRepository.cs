@@ -8,4 +8,5 @@ public interface IShiftRepository
     Task<ApiResponse<Shift>> CreateAsync(Shift shift);
     Task<ApiResponse<Shift>> DeleteAsync(Shift shift);
     Task<ApiResponse<Shift>> UpdateAsync(Shift shift);
+    Task<ApiResponse<List<Shift>>> CreateManyAsync(List<Shift> shifts);
 }

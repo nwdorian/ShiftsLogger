@@ -7,5 +7,6 @@ public class RepositoryModule : Module
     {
         builder.RegisterType<UserRepository>().AsImplementedInterfaces().InstancePerDependency();
         builder.RegisterType<ShiftRepository>().AsImplementedInterfaces().InstancePerDependency();
+        builder.RegisterType<SeedingRepository>().AsImplementedInterfaces().InstancePerDependency();
     }
 }
