@@ -12,6 +12,7 @@ public class ContextModule : Module
             var configuration = c.Resolve<IConfiguration>();
             var optionsBuilder = new DbContextOptionsBuilder<ShiftsContext>();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("Default"));
+            optionsBuilder.EnableSensitiveDataLogging();
             return new ShiftsContext(optionsBuilder.Options);
         })
             .AsSelf()
