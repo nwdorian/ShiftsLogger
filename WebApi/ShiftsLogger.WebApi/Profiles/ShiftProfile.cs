@@ -8,7 +8,7 @@ public class ShiftProfile : Profile
 {
     public ShiftProfile()
     {
-        CreateMap<Shift, ShiftRead>();
+        CreateMap<Shift, ShiftRead>().ReverseMap();
         CreateMap<ShiftCreate, Shift>();
         CreateMap<ShiftUpdate, Shift>();
     }

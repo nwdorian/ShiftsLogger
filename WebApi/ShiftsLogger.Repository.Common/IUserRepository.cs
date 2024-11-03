@@ -9,4 +9,5 @@ public interface IUserRepository
     Task<ApiResponse<User>> DeleteAsync(User user);
     Task<ApiResponse<User>> UpdateAsync(User user);
     Task<ApiResponse<List<User>>> CreateManyAsync(List<User> users);
+    Task<ApiResponse<User>> ModifyShiftsAsync(Guid userId, List<Shift> shifts);
 }

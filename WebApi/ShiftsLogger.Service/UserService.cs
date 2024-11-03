@@ -92,4 +92,17 @@ public class UserService : IUserService
 
         return await _userRepository.UpdateAsync(existingUser);
     }
+
+    public async Task<ApiResponse<User>> ModifyShiftsAsync(Guid userId, List<Shift> shifts)
+    {
+        var response = await _userRepository.GetById(userId);
+
+        if (response.Success == false || response.Data is null)
+        {
+            response.Message = "User not found!";
+            return response;
+        }
+
+        return await _userRepository.ModifyShiftsAsync(userId, shifts);
+    }
 }

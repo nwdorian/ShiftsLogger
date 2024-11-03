@@ -26,7 +26,7 @@ public class SeedingRepository : ISeedingRepository
 
             foreach (var user in userEntities)
             {
-                user.Shifts = shiftEntities;
+                user.Shifts.AddRange(shiftEntities);
             }
             _context.Users.AddRange(userEntities);
             await _context.SaveChangesAsync();

@@ -90,4 +90,19 @@ public class UserController : ControllerBase
 
         return BadRequest(response.Message);
     }
+
+    [HttpPut("{id}/shifts")]
+    public async Task<IActionResult> Modify(Guid id, List<ShiftRead> shiftsRead)
+    {
+        var shifts = _mapper.Map<List<Shift>>(shiftsRead);
+
+        var response = await _userService.ModifyShiftsAsync(id, shifts);
+
+        if (response.Success)
+        {
+            return NoContent();
+        }
+
+        return BadRequest(response.Message);
+    }
 }

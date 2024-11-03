@@ -159,4 +159,53 @@ public class UserRepository : IUserRepository
         }
         return response;
     }
+
+    public async Task<ApiResponse<User>> ModifyShiftsAsync(Guid userId, List<Shift> shifts)
+    {
+        var response = new ApiResponse<User>();
+        try
+        {
+            var userEntity = _context.Users.Include(u => u.Shifts).Where(u => u.Id == userId).FirstOrDefault();
+
+            if (userEntity is null)
+            {
+                response.Message = $"User with Id {userId} doesn't exist";
+                response.Success = false;
+                return response;
+            }
+
+            var shiftsToRemove = userEntity.Shifts
+                .Where(se => !shifts.Any(s => s.Id == se.Id))
+                .ToList();
+
+            var shiftsToAdd = shifts
+                .Where(s => !userEntity.Shifts.Any(se => se.Id == s.Id))
+                .ToList();
+
+            if (shiftsToRemove.Count != 0)
+            {
+                foreach (var shift in shiftsToRemove)
+                {
+                    userEntity.Shifts.Remove(shift);
+                }
+            }
+            if (shiftsToAdd.Count != 0)
+            {
+                var shiftEntitiesToAdd = _mapper.Map<List<ShiftEntity>>(shiftsToAdd);
+                _context.Shifts.AttachRange(shiftEntitiesToAdd);
+                userEntity.Shifts.AddRange(shiftEntitiesToAdd);
+            }
+
+            await _context.SaveChangesAsync();
+
+            response.Data = _mapper.Map<User>(userEntity);
+            response.Success = true;
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in UserRepository ModifyShiftsAsync: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
 }
