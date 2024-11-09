@@ -8,5 +8,5 @@ public class UserEntity
     public bool IsActive { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime DateUpdated { get; set; }
-    public ICollection<ShiftEntity>? Shifts { get; set; }
+    public List<ShiftEntity> Shifts { get; protected set; } = new List<ShiftEntity>();
 }
