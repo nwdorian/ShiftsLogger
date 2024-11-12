@@ -48,7 +48,7 @@ public class UserRepository : IUserRepository
         return response;
     }
 
-    public async Task<ApiResponse<User>> GetById(Guid id)
+    public async Task<ApiResponse<User>> GetByIdAsync(Guid id)
     {
         var response = new ApiResponse<User>();
 
@@ -133,7 +133,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository DeleteAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository UpdateAsync: {ex.Message}";
             response.Success = false;
         }
         return response;

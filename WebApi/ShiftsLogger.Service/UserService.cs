@@ -19,7 +19,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<User>> GetByIdAsync(Guid id)
     {
-        return await _userRepository.GetById(id);
+        return await _userRepository.GetByIdAsync(id);
     }
 
     public async Task<ApiResponse<User>> CreateAsync(User user)
@@ -34,7 +34,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<User>> DeleteAsync(Guid id)
     {
-        var response = await _userRepository.GetById(id);
+        var response = await _userRepository.GetByIdAsync(id);
 
         if (response.Success == false)
         {
@@ -57,7 +57,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<User>> UpdateAsync(Guid id, User user)
     {
-        var response = await _userRepository.GetById(id);
+        var response = await _userRepository.GetByIdAsync(id);
 
         if (response.Success == false)
         {
@@ -95,7 +95,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<User>> ModifyShiftsAsync(Guid userId, List<Shift> shifts)
     {
-        var response = await _userRepository.GetById(userId);
+        var response = await _userRepository.GetByIdAsync(userId);
 
         if (response.Success == false || response.Data is null)
         {
