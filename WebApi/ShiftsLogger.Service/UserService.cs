@@ -93,7 +93,7 @@ public class UserService : IUserService
         return await _userRepository.UpdateAsync(existingUser);
     }
 
-    public async Task<ApiResponse<User>> ModifyShiftsAsync(Guid userId, List<Shift> shifts)
+    public async Task<ApiResponse<User>> UpdateShiftsAsync(Guid userId, List<Shift> shifts)
     {
         var response = await _userRepository.GetByIdAsync(userId);
 
@@ -103,6 +103,6 @@ public class UserService : IUserService
             return response;
         }
 
-        return await _userRepository.ModifyShiftsAsync(userId, shifts);
+        return await _userRepository.UpdateShiftsAsync(userId, shifts);
     }
 }

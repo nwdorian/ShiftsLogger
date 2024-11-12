@@ -160,7 +160,7 @@ public class UserRepository : IUserRepository
         return response;
     }
 
-    public async Task<ApiResponse<User>> ModifyShiftsAsync(Guid userId, List<Shift> shifts)
+    public async Task<ApiResponse<User>> UpdateShiftsAsync(Guid userId, List<Shift> shifts)
     {
         var response = new ApiResponse<User>();
         try
@@ -203,7 +203,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository {nameof(ModifyShiftsAsync)}: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(UpdateShiftsAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;

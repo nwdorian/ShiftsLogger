@@ -92,11 +92,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}/shifts")]
-    public async Task<IActionResult> Modify(Guid id, List<ShiftRead> shiftsRead)
+    public async Task<IActionResult> UpdateShifts(Guid id, List<ShiftRead> shiftsRead)
     {
         var shifts = _mapper.Map<List<Shift>>(shiftsRead);
 
-        var response = await _userService.ModifyShiftsAsync(id, shifts);
+        var response = await _userService.UpdateShiftsAsync(id, shifts);
 
         if (response.Success)
         {
