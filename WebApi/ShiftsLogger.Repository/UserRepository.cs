@@ -41,7 +41,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository GetAllAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(GetAllAsync)}: {ex.Message}";
             response.Success = false;
         }
 
@@ -72,7 +72,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository GetByIdAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(GetByIdAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -92,7 +92,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository CreateAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(CreateAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -112,7 +112,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository DeleteAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(DeleteAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -133,7 +133,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository UpdateAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(UpdateAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -154,7 +154,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository CreateManyAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(CreateManyAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -203,7 +203,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository ModifyShiftsAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(ModifyShiftsAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;

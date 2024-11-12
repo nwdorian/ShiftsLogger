@@ -40,7 +40,7 @@ public class ShiftRepository : IShiftRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in ShiftRepository GetAllAsync: {ex.Message}";
+            response.Message = $"Error in ShiftRepository {nameof(GetAllAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -70,7 +70,7 @@ public class ShiftRepository : IShiftRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in ShiftRepository GetByIdAsync: {ex.Message}";
+            response.Message = $"Error in ShiftRepository {nameof(GetByIdAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -89,7 +89,7 @@ public class ShiftRepository : IShiftRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in ShiftRepository CreateAsync: {ex.Message}";
+            response.Message = $"Error in ShiftRepository {nameof(CreateAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -109,7 +109,7 @@ public class ShiftRepository : IShiftRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in ShiftRepository DeleteAsync: {ex.Message}";
+            response.Message = $"Error in ShiftRepository {nameof(DeleteAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -130,7 +130,7 @@ public class ShiftRepository : IShiftRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in ShiftRepository UpdateAsync: {ex.Message}";
+            response.Message = $"Error in ShiftRepository {nameof(UpdateAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -150,7 +150,7 @@ public class ShiftRepository : IShiftRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in ShiftRepository CreateManyAsync: {ex.Message}";
+            response.Message = $"Error in ShiftRepository {nameof(CreateManyAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
