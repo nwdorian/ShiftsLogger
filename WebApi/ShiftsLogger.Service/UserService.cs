@@ -59,31 +59,24 @@ public class UserService : IUserService
     {
         var response = await _userRepository.GetByIdAsync(id);
 
-        if (response.Success == false)
+        if (response.Success == false || response.Data is null)
         {
-            response.Message = "User not found!";
             return response;
         }
 
         var existingUser = response.Data;
 
-        if (existingUser is null)
-        {
-            response.Message = "User is null";
-            return response;
-        }
-
-        if (!string.IsNullOrEmpty(user.FirstName))
+        if (!string.IsNullOrWhiteSpace(user.FirstName))
         {
             existingUser.FirstName = user.FirstName;
         }
 
-        if (!string.IsNullOrEmpty(user.LastName))
+        if (!string.IsNullOrWhiteSpace(user.LastName))
         {
             existingUser.LastName = user.LastName;
         }
 
-        if (!string.IsNullOrEmpty(user.Email))
+        if (!string.IsNullOrWhiteSpace(user.Email))
         {
             existingUser.Email = user.Email;
         }
