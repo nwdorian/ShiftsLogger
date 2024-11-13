@@ -41,14 +41,14 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository GetAllAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(GetAllAsync)}: {ex.Message}";
             response.Success = false;
         }
 
         return response;
     }
 
-    public async Task<ApiResponse<User>> GetById(Guid id)
+    public async Task<ApiResponse<User>> GetByIdAsync(Guid id)
     {
         var response = new ApiResponse<User>();
 
@@ -66,13 +66,13 @@ public class UserRepository : IUserRepository
             }
             else
             {
-                response.Data = _mapper.Map<User>(user);
+                response.Data = user;
                 response.Success = true;
             }
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository GetByIdAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(GetByIdAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -92,7 +92,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository CreateAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(CreateAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -112,7 +112,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository DeleteAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(DeleteAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -133,7 +133,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository DeleteAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(UpdateAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
@@ -154,22 +154,25 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository CreateManyAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(CreateManyAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;
     }
 
-    public async Task<ApiResponse<User>> ModifyShiftsAsync(Guid userId, List<Shift> shifts)
+    public async Task<ApiResponse<User>> UpdateShiftsAsync(Guid id, List<Shift> shifts)
     {
         var response = new ApiResponse<User>();
         try
         {
-            var userEntity = _context.Users.Include(u => u.Shifts).Where(u => u.Id == userId).FirstOrDefault();
+            var userEntity = _context.Users
+                .Include(u => u.Shifts.Where(s => s.IsActive == true))
+                .Where(u => u.IsActive == true)
+                .SingleOrDefault(u => u.Id == id);
 
             if (userEntity is null)
             {
-                response.Message = $"User with Id {userId} doesn't exist";
+                response.Message = $"User with Id {id} doesn't exist";
                 response.Success = false;
                 return response;
             }
@@ -203,7 +206,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            response.Message = $"Error in UserRepository ModifyShiftsAsync: {ex.Message}";
+            response.Message = $"Error in UserRepository {nameof(UpdateShiftsAsync)}: {ex.Message}";
             response.Success = false;
         }
         return response;

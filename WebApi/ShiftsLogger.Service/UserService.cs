@@ -19,7 +19,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<User>> GetByIdAsync(Guid id)
     {
-        return await _userRepository.GetById(id);
+        return await _userRepository.GetByIdAsync(id);
     }
 
     public async Task<ApiResponse<User>> CreateAsync(User user)
@@ -34,7 +34,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<User>> DeleteAsync(Guid id)
     {
-        var response = await _userRepository.GetById(id);
+        var response = await _userRepository.GetByIdAsync(id);
 
         if (response.Success == false)
         {
@@ -57,33 +57,26 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<User>> UpdateAsync(Guid id, User user)
     {
-        var response = await _userRepository.GetById(id);
+        var response = await _userRepository.GetByIdAsync(id);
 
-        if (response.Success == false)
+        if (response.Success == false || response.Data is null)
         {
-            response.Message = "User not found!";
             return response;
         }
 
         var existingUser = response.Data;
 
-        if (existingUser is null)
-        {
-            response.Message = "User is null";
-            return response;
-        }
-
-        if (!string.IsNullOrEmpty(user.FirstName))
+        if (!string.IsNullOrWhiteSpace(user.FirstName))
         {
             existingUser.FirstName = user.FirstName;
         }
 
-        if (!string.IsNullOrEmpty(user.LastName))
+        if (!string.IsNullOrWhiteSpace(user.LastName))
         {
             existingUser.LastName = user.LastName;
         }
 
-        if (!string.IsNullOrEmpty(user.Email))
+        if (!string.IsNullOrWhiteSpace(user.Email))
         {
             existingUser.Email = user.Email;
         }
@@ -93,16 +86,15 @@ public class UserService : IUserService
         return await _userRepository.UpdateAsync(existingUser);
     }
 
-    public async Task<ApiResponse<User>> ModifyShiftsAsync(Guid userId, List<Shift> shifts)
+    public async Task<ApiResponse<User>> UpdateShiftsAsync(Guid id, List<Shift> shifts)
     {
-        var response = await _userRepository.GetById(userId);
+        var response = await _userRepository.GetByIdAsync(id);
 
         if (response.Success == false || response.Data is null)
         {
-            response.Message = "User not found!";
             return response;
         }
 
-        return await _userRepository.ModifyShiftsAsync(userId, shifts);
+        return await _userRepository.UpdateShiftsAsync(id, shifts);
     }
 }
