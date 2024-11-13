@@ -160,16 +160,19 @@ public class UserRepository : IUserRepository
         return response;
     }
 
-    public async Task<ApiResponse<User>> UpdateShiftsAsync(Guid userId, List<Shift> shifts)
+    public async Task<ApiResponse<User>> UpdateShiftsAsync(Guid id, List<Shift> shifts)
     {
         var response = new ApiResponse<User>();
         try
         {
-            var userEntity = _context.Users.Include(u => u.Shifts).Where(u => u.Id == userId).FirstOrDefault();
+            var userEntity = _context.Users
+                .Include(u => u.Shifts.Where(s => s.IsActive == true))
+                .Where(u => u.IsActive == true)
+                .SingleOrDefault(u => u.Id == id);
 
             if (userEntity is null)
             {
-                response.Message = $"User with Id {userId} doesn't exist";
+                response.Message = $"User with Id {id} doesn't exist";
                 response.Success = false;
                 return response;
             }

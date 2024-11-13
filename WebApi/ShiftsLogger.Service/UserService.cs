@@ -86,16 +86,15 @@ public class UserService : IUserService
         return await _userRepository.UpdateAsync(existingUser);
     }
 
-    public async Task<ApiResponse<User>> UpdateShiftsAsync(Guid userId, List<Shift> shifts)
+    public async Task<ApiResponse<User>> UpdateShiftsAsync(Guid id, List<Shift> shifts)
     {
-        var response = await _userRepository.GetByIdAsync(userId);
+        var response = await _userRepository.GetByIdAsync(id);
 
         if (response.Success == false || response.Data is null)
         {
-            response.Message = "User not found!";
             return response;
         }
 
-        return await _userRepository.UpdateShiftsAsync(userId, shifts);
+        return await _userRepository.UpdateShiftsAsync(id, shifts);
     }
 }
