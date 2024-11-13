@@ -66,7 +66,7 @@ public class UserRepository : IUserRepository
             }
             else
             {
-                response.Data = _mapper.Map<User>(user);
+                response.Data = user;
                 response.Success = true;
             }
         }

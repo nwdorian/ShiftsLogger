@@ -64,7 +64,7 @@ public class ShiftRepository : IShiftRepository
             }
             else
             {
-                response.Data = _mapper.Map<Shift>(shift);
+                response.Data = shift;
                 response.Success = true;
             }
         }
