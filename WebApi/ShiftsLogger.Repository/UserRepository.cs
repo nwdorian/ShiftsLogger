@@ -211,4 +211,34 @@ public class UserRepository : IUserRepository
         }
         return response;
     }
+
+    public async Task<ApiResponse<List<Shift>>> GetShiftsByUserIdAsync(Guid id)
+    {
+        var response = new ApiResponse<List<Shift>>();
+        try
+        {
+            var shifts = await _context.Users
+                .Where(u => u.IsActive == true && u.Id == id)
+                .SelectMany(u => u.Shifts.Where(s => s.IsActive == true))
+                .ProjectTo<Shift>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            if (shifts.Count == 0)
+            {
+                response.Message = $"No shifts found!";
+                response.Success = false;
+            }
+            else
+            {
+                response.Data = shifts;
+                response.Success = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in UserRepository {nameof(GetShiftsByUserIdAsync)}: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
 }

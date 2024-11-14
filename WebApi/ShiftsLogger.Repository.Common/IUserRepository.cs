@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<ApiResponse<User>> UpdateAsync(User user);
     Task<ApiResponse<List<User>>> CreateManyAsync(List<User> users);
     Task<ApiResponse<User>> UpdateShiftsAsync(Guid id, List<Shift> shifts);
+    Task<ApiResponse<List<Shift>>> GetShiftsByUserIdAsync(Guid id);
 }

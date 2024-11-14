@@ -105,4 +105,18 @@ public class UsersController : ControllerBase
 
         return BadRequest(response.Message);
     }
+
+    [HttpGet("{id}/shifts")]
+    public async Task<IActionResult> GetShifts(Guid id)
+    {
+        var response = await _userService.GetShiftsByUserIdAsync(id);
+
+        if (response.Success)
+        {
+            var shifts = _mapper.Map<List<ShiftRead>>(response.Data);
+            return Ok(shifts);
+        }
+
+        return BadRequest(response.Message);
+    }
 }
