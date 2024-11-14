@@ -8,12 +8,12 @@ namespace ShiftsLogger.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
 
-    public UserController(IUserService userService, IMapper mapper)
+    public UsersController(IUserService userService, IMapper mapper)
     {
         _userService = userService;
         _mapper = mapper;
@@ -101,6 +101,20 @@ public class UserController : ControllerBase
         if (response.Success)
         {
             return NoContent();
+        }
+
+        return BadRequest(response.Message);
+    }
+
+    [HttpGet("{id}/shifts")]
+    public async Task<IActionResult> GetShifts(Guid id)
+    {
+        var response = await _userService.GetShiftsByUserIdAsync(id);
+
+        if (response.Success)
+        {
+            var shifts = _mapper.Map<List<ShiftRead>>(response.Data);
+            return Ok(shifts);
         }
 
         return BadRequest(response.Message);

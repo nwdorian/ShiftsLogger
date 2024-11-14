@@ -97,4 +97,9 @@ public class UserService : IUserService
 
         return await _userRepository.UpdateShiftsAsync(id, shifts);
     }
+
+    public async Task<ApiResponse<List<Shift>>> GetShiftsByUserIdAsync(Guid id)
+    {
+        return await _userRepository.GetShiftsByUserIdAsync(id);
+    }
 }

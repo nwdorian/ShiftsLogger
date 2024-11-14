@@ -8,12 +8,12 @@ namespace ShiftsLogger.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ShiftController : ControllerBase
+public class ShiftsController : ControllerBase
 {
     private readonly IShiftService _shiftService;
     private readonly IMapper _mapper;
 
-    public ShiftController(IShiftService shiftService, IMapper mapper)
+    public ShiftsController(IShiftService shiftService, IMapper mapper)
     {
         _shiftService = shiftService;
         _mapper = mapper;
