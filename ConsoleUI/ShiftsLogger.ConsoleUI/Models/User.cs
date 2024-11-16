@@ -1,5 +1,5 @@
 ﻿namespace ShiftsLogger.ConsoleUI.Models;
-public class User
+public class User : IUser
 {
     public Guid Id { get; set; }
     public string? FirstName { get; set; }

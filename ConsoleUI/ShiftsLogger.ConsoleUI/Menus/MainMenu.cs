@@ -1,17 +1,19 @@
 ﻿using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI.Menus;
-public class MainMenu
+public class MainMenu : BaseMenu
 {
     private readonly UsersMenu _usersMenu;
     private readonly ShiftsMenu _shiftsMenu;
+    private readonly SeedingMenu _seedingMenu;
 
-    public MainMenu(UsersMenu usersMenu, ShiftsMenu shiftsMenu)
+    public MainMenu(UsersMenu usersMenu, ShiftsMenu shiftsMenu, SeedingMenu seedingMenu)
     {
         _usersMenu = usersMenu;
         _shiftsMenu = shiftsMenu;
+        _seedingMenu = seedingMenu;
     }
-    public async Task DisplayAsync()
+    public override async Task DisplayAsync()
     {
         var exit = false;
 
@@ -25,19 +27,22 @@ public class MainMenu
                     .Color(Color.Yellow));
 
             var selection = AnsiConsole.Prompt(
-                new SelectionPrompt<MainMenuOptions>()
+                new SelectionPrompt<Options>()
                 .Title("Select from the menu:")
-                .AddChoices(Enum.GetValues<MainMenuOptions>()));
+                .AddChoices(Enum.GetValues<Options>()));
 
             switch (selection)
             {
-                case MainMenuOptions.ManageUsers:
+                case Options.ManageUsers:
                     await _usersMenu.DisplayAsync();
                     break;
-                case MainMenuOptions.ManageShifts:
+                case Options.ManageShifts:
                     await _shiftsMenu.DisplayAsync();
                     break;
-                case MainMenuOptions.Exit:
+                case Options.SeedData:
+                    await _seedingMenu.DisplayAsync();
+                    break;
+                case Options.Exit:
                     if (AnsiConsole.Confirm("Are you sure you want to exit?"))
                     {
                         Console.WriteLine("Goodbye!");
@@ -51,10 +56,11 @@ public class MainMenu
             }
         }
     }
-    private enum MainMenuOptions
+    private enum Options
     {
         ManageUsers,
         ManageShifts,
+        SeedData,
         Exit
     }
 }

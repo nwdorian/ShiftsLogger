@@ -3,7 +3,12 @@
 namespace ShiftsLogger.ConsoleUI;
 public static class UserInput
 {
-    public static int GetIndexInput(string prompt)
+    public static void PromptAnyKeyToContinue()
+    {
+        AnsiConsole.Write("Press any key to continue...");
+        Console.ReadLine();
+    }
+    public static int PromptNumberInput(string prompt)
     {
         return AnsiConsole.Prompt(
             new TextPrompt<int>(prompt)
@@ -13,5 +18,17 @@ public static class UserInput
                     < 0 => ValidationResult.Error("[red]Id must be greater than or equal to 0![/]"),
                     _ => ValidationResult.Success()
                 }));
+    }
+
+    public static string PromptStringInput(string prompt)
+    {
+        return AnsiConsole.Ask<string>(prompt);
+    }
+
+    public static string PromptStringAllowEmptyInput(string prompt)
+    {
+        return AnsiConsole.Prompt(
+            new TextPrompt<string>(prompt)
+            .AllowEmpty());
     }
 }

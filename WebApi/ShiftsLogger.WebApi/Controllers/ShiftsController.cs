@@ -70,7 +70,7 @@ public class ShiftsController : ControllerBase
 
         if (response.Success)
         {
-            return Ok(response.Message);
+            return NoContent();
         }
 
         return BadRequest(response.Message);
@@ -85,7 +85,7 @@ public class ShiftsController : ControllerBase
 
         if (response.Success)
         {
-            return Ok(response.Message);
+            return NoContent();
         }
 
         return BadRequest(response.Message);

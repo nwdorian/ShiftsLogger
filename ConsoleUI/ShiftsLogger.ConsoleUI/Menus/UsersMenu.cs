@@ -1,16 +1,16 @@
-﻿using ShiftsLogger.ConsoleUI.Services;
+﻿using ShiftsLogger.ConsoleUI.Controllers;
 using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI.Menus;
-public class UsersMenu
+public class UsersMenu : BaseMenu
 {
-    private readonly UserService _userService;
+    private readonly UsersController _usersController;
 
-    public UsersMenu(UserService userService)
+    public UsersMenu(UsersController usersController)
     {
-        _userService = userService;
+        _usersController = usersController;
     }
-    public async Task DisplayAsync()
+    public override async Task DisplayAsync()
     {
         var exit = false;
 
@@ -19,31 +19,34 @@ public class UsersMenu
             AnsiConsole.Clear();
 
             var selection = AnsiConsole.Prompt(
-                new SelectionPrompt<UsersMenuOptions>()
+                new SelectionPrompt<Options>()
                 .Title("Select from the menu:")
-                .AddChoices(Enum.GetValues<UsersMenuOptions>()));
+                .AddChoices(Enum.GetValues<Options>()));
 
             switch (selection)
             {
-                case UsersMenuOptions.ViewAllUsers:
-                    await _userService.GetAll();
+                case Options.ViewAllUsers:
+                    await _usersController.GetAllUsers();
                     break;
-                case UsersMenuOptions.AddUser:
+                case Options.AddUser:
+                    await _usersController.AddUser();
                     break;
-                case UsersMenuOptions.DeleteUser:
+                case Options.DeleteUser:
+                    await _usersController.DeleteUser();
                     break;
-                case UsersMenuOptions.UpdateUser:
+                case Options.UpdateUser:
+                    await _usersController.UpdateUser();
                     break;
-                case UsersMenuOptions.EditShifts:
+                case Options.EditShifts:
                     break;
-                case UsersMenuOptions.MainMenu:
+                case Options.MainMenu:
                     exit = true;
                     break;
             }
         }
     }
 
-    private enum UsersMenuOptions
+    private enum Options
     {
         ViewAllUsers,
         AddUser,

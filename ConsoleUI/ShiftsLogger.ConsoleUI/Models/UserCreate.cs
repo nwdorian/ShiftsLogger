@@ -1,0 +1,13 @@
+﻿namespace ShiftsLogger.ConsoleUI.Models;
+public class UserCreate(string firstName, string lastName, string email) : IUser
+{
+    public Guid Id { get; set; }
+    public string? FirstName { get; set; } = firstName;
+    public string? LastName { get; set; } = lastName;
+    public string? Email { get; set; } = email;
+
+    public override string ToString()
+    {
+        return string.Join(Environment.NewLine, $"{FirstName} {LastName}");
+    }
+}

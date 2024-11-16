@@ -1,9 +1,9 @@
 ﻿using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI.Menus;
-public class ShiftsMenu
+public class ShiftsMenu : BaseMenu
 {
-    public async Task DisplayAsync()
+    public override async Task DisplayAsync()
     {
         var exit = false;
 
@@ -12,28 +12,28 @@ public class ShiftsMenu
             AnsiConsole.Clear();
 
             var selection = AnsiConsole.Prompt(
-                new SelectionPrompt<ShiftsMenuOptions>()
+                new SelectionPrompt<Options>()
                 .Title("Select from the menu:")
-                .AddChoices(Enum.GetValues<ShiftsMenuOptions>()));
+                .AddChoices(Enum.GetValues<Options>()));
 
             switch (selection)
             {
-                case ShiftsMenuOptions.ViewAllShifts:
+                case Options.ViewAllShifts:
                     break;
-                case ShiftsMenuOptions.AddShift:
+                case Options.AddShift:
                     break;
-                case ShiftsMenuOptions.DeleteShift:
+                case Options.DeleteShift:
                     break;
-                case ShiftsMenuOptions.UpdateShift:
+                case Options.UpdateShift:
                     break;
-                case ShiftsMenuOptions.MainMenu:
+                case Options.MainMenu:
                     exit = true;
                     break;
             }
         }
     }
 
-    private enum ShiftsMenuOptions
+    private enum Options
     {
         ViewAllShifts,
         AddShift,

@@ -1,4 +1,5 @@
-﻿using ShiftsLogger.ConsoleUI.Menus;
+﻿using ShiftsLogger.ConsoleUI.Controllers;
+using ShiftsLogger.ConsoleUI.Menus;
 using ShiftsLogger.ConsoleUI.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -9,12 +10,20 @@ public static class ConsoleServiceExtensions
         services.AddScoped<MainMenu>();
         services.AddScoped<UsersMenu>();
         services.AddScoped<ShiftsMenu>();
+        services.AddScoped<SeedingMenu>();
         return services;
     }
 
     public static IServiceCollection AddConsoleServices(this IServiceCollection services)
     {
-        services.AddScoped<UserService>();
+        services.AddScoped<SeedingService>();
+        services.AddScoped<UsersService>();
+        return services;
+    }
+
+    public static IServiceCollection AddConsoleControllers(this IServiceCollection services)
+    {
+        services.AddScoped<UsersController>();
         return services;
     }
 }

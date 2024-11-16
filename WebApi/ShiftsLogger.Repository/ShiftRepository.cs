@@ -24,12 +24,13 @@ public class ShiftRepository : IShiftRepository
         {
             var shifts = await _context.Shifts
                 .Where(s => s.IsActive == true)
+                .OrderBy(s => s.DateCreated)
                 .ProjectTo<Shift>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             if (shifts.Count == 0)
             {
-                response.Message = "No shifts found in the database!";
+                response.Message = "No shifts found!";
                 response.Success = false;
             }
             else
