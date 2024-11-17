@@ -3,46 +3,21 @@ using ShiftsLogger.ConsoleUI.RefitClients;
 using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI.Services;
-public class UsersService
+public class ShiftsService
 {
     private readonly IShiftsLoggerClient _apiClient;
 
-    public UsersService(IShiftsLoggerClient apiClient)
+    public ShiftsService(IShiftsLoggerClient apiClient)
     {
         _apiClient = apiClient;
     }
-    public async Task<List<User>> GetAll()
-    {
-        var users = new List<User>();
-        try
-        {
-            var response = await _apiClient.GetAllUsers();
 
-            if (response.IsSuccessful)
-            {
-                users = response.Content;
-            }
-            else
-            {
-                AnsiConsole.MarkupLine($"[red]{response.Error.Content ?? response.Error.Message}[/]");
-                UserInput.PromptAnyKeyToContinue();
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
-        }
-        return users;
-    }
-
-    public async Task<List<Shift>> GetShiftsByUserId(Guid id)
+    public async Task<List<Shift>> GetAll()
     {
         var shifts = new List<Shift>();
         try
         {
-            var response = await _apiClient.GetShiftsByUserId(id);
+            var response = await _apiClient.GetAllShifts();
 
             if (response.IsSuccessful)
             {
@@ -53,7 +28,6 @@ public class UsersService
                 AnsiConsole.MarkupLine($"[red]{response.Error.Content ?? response.Error.Message}[/]");
                 UserInput.PromptAnyKeyToContinue();
             }
-
         }
         catch (Exception ex)
         {
@@ -63,15 +37,15 @@ public class UsersService
         return shifts;
     }
 
-    public async Task CreateUser(UserCreate user)
+    public async Task CreateShift(ShiftCreate shift)
     {
         try
         {
-            var response = await _apiClient.CreateUser(user);
+            var response = await _apiClient.CreateShift(shift);
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine("New user created successfully!");
+                AnsiConsole.MarkupLine("New shift created successfully!");
                 UserInput.PromptAnyKeyToContinue();
             }
             else
@@ -87,15 +61,15 @@ public class UsersService
         }
     }
 
-    public async Task DeleteUser(Guid id)
+    public async Task DeleteShift(Guid id)
     {
         try
         {
-            var response = await _apiClient.DeleteUser(id);
+            var response = await _apiClient.DeleteShift(id);
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine($"User deleted successfully!");
+                AnsiConsole.MarkupLine($"Shift deleted successfully!");
                 UserInput.PromptAnyKeyToContinue();
             }
             else
@@ -111,15 +85,15 @@ public class UsersService
         }
     }
 
-    public async Task UpdateUser(Guid id, UserUpdate user)
+    public async Task UpdateShift(Guid id, ShiftUpdate shift)
     {
         try
         {
-            var response = await _apiClient.UpdateUser(id, user);
+            var response = await _apiClient.UpdateShift(id, shift);
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine($"User updated successfully!");
+                AnsiConsole.MarkupLine($"Shift updated successfully!");
                 UserInput.PromptAnyKeyToContinue();
             }
             else

@@ -18,12 +18,14 @@ public static class ConsoleServiceExtensions
     {
         services.AddScoped<SeedingService>();
         services.AddScoped<UsersService>();
+        services.AddScoped<ShiftsService>();
         return services;
     }
 
     public static IServiceCollection AddConsoleControllers(this IServiceCollection services)
     {
         services.AddScoped<UsersController>();
+        services.AddScoped<ShiftsController>();
         return services;
     }
 }

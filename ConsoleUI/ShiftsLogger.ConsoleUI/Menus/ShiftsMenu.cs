@@ -1,8 +1,15 @@
-﻿using Spectre.Console;
+﻿using ShiftsLogger.ConsoleUI.Controllers;
+using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI.Menus;
 public class ShiftsMenu : BaseMenu
 {
+    private readonly ShiftsController _shiftsController;
+
+    public ShiftsMenu(ShiftsController shiftsController)
+    {
+        _shiftsController = shiftsController;
+    }
     public override async Task DisplayAsync()
     {
         var exit = false;
@@ -19,12 +26,16 @@ public class ShiftsMenu : BaseMenu
             switch (selection)
             {
                 case Options.ViewAllShifts:
+                    await _shiftsController.GetAllShifts();
                     break;
                 case Options.AddShift:
+                    await _shiftsController.AddShift();
                     break;
                 case Options.DeleteShift:
+                    await _shiftsController.DeleteShift();
                     break;
                 case Options.UpdateShift:
+                    await _shiftsController.UpdateShift();
                     break;
                 case Options.MainMenu:
                     exit = true;

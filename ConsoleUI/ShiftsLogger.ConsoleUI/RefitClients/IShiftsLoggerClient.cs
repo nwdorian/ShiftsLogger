@@ -8,7 +8,7 @@ public interface IShiftsLoggerClient
     Task<ApiResponse<string>> SeedDatabase();
 
     [Get("/users")]
-    Task<ApiResponse<List<User>>> GetAll();
+    Task<ApiResponse<List<User>>> GetAllUsers();
 
     [Get("/users/{id}/shifts")]
     Task<ApiResponse<List<Shift>>> GetShiftsByUserId(Guid id);
@@ -21,4 +21,16 @@ public interface IShiftsLoggerClient
 
     [Put("/users/{id}")]
     Task<IApiResponse> UpdateUser(Guid id, [Body] UserUpdate user);
+
+    [Get("/shifts")]
+    Task<ApiResponse<List<Shift>>> GetAllShifts();
+
+    [Post("/shifts")]
+    Task<ApiResponse<Shift>> CreateShift(ShiftCreate shift);
+
+    [Delete("/shifts/{id}")]
+    Task<IApiResponse> DeleteShift(Guid id);
+
+    [Put("/shifts/{id}")]
+    Task<IApiResponse> UpdateShift(Guid id, [Body] ShiftUpdate shift);
 }

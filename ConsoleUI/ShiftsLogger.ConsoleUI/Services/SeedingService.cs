@@ -4,17 +4,17 @@ using Spectre.Console;
 namespace ShiftsLogger.ConsoleUI.Services;
 public class SeedingService
 {
-    private readonly IShiftsLoggerClient _usersClient;
+    private readonly IShiftsLoggerClient _apiClient;
 
-    public SeedingService(IShiftsLoggerClient usersClient)
+    public SeedingService(IShiftsLoggerClient apiClient)
     {
-        _usersClient = usersClient;
+        _apiClient = apiClient;
     }
     public async Task SeedDatabase()
     {
         try
         {
-            var response = await _usersClient.SeedDatabase();
+            var response = await _apiClient.SeedDatabase();
 
             if (response.IsSuccessful)
             {

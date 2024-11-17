@@ -26,6 +26,7 @@ public static class TableVisualization
         table.AddColumns("Name", "Email");
         table.AddRow(user.ToString() ?? "Name not found", user.Email ?? "Email not found");
 
+        AnsiConsole.Clear();
         AnsiConsole.Write(table);
     }
 
@@ -33,18 +34,37 @@ public static class TableVisualization
     {
         var table = new Table();
         table.Title = new TableTitle("Shifts");
-        table.AddColumns("Start date", "Start time", "End date", "End time");
+        table.AddColumns("Id", "Start date", "Start time", "End date", "End time");
 
+        var index = 1;
         foreach (var shift in shifts)
         {
             table.AddRow
                 (
+                index.ToString(),
                 shift.StartTime.ToShortDateString(),
                 shift.StartTime.ToShortTimeString(),
                 shift.EndTime.ToShortDateString(),
                 shift.EndTime.ToShortTimeString()
                 );
+            index++;
         }
+        AnsiConsole.Write(table);
+    }
+
+    public static void DisplayShiftTable<T>(T shift) where T : IShift
+    {
+        var table = new Table();
+        table.AddColumns("Start date", "Start time", "End date", "End time");
+        table.AddRow
+            (
+            shift.StartTime.ToShortDateString(),
+            shift.StartTime.ToShortTimeString(),
+            shift.EndTime.ToShortDateString(),
+            shift.EndTime.ToShortTimeString()
+            );
+
+        AnsiConsole.Clear();
         AnsiConsole.Write(table);
     }
 

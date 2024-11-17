@@ -1,5 +1,5 @@
 ﻿namespace ShiftsLogger.ConsoleUI.Models;
-public class Shift
+public class Shift : IShift
 {
     public Guid Id { get; set; }
     public DateTime StartTime { get; set; }

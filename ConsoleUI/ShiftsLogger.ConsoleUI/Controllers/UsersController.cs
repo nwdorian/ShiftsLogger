@@ -46,11 +46,7 @@ public class UsersController
             return;
         }
 
-        if (await _usersService.CreateUser(user))
-        {
-            AnsiConsole.MarkupLine("New user created successfully!");
-            UserInput.PromptAnyKeyToContinue();
-        }
+        await _usersService.CreateUser(user);
     }
 
     public async Task DeleteUser()
@@ -68,18 +64,14 @@ public class UsersController
             return;
         }
 
-        AnsiConsole.Clear();
         TableVisualization.DisplayUserTable(user);
         if (!AnsiConsole.Confirm("Are you sure you want delete this user?"))
         {
             return;
         }
 
-        if (await _usersService.DeleteUser(user.Id))
-        {
-            AnsiConsole.MarkupLine($"{user.ToString()} deleted successfully!");
-            UserInput.PromptAnyKeyToContinue();
-        }
+        await _usersService.DeleteUser(user.Id);
+
     }
 
     public async Task UpdateUser()
@@ -97,7 +89,6 @@ public class UsersController
             return;
         }
 
-        AnsiConsole.Clear();
         TableVisualization.DisplayUserTable(user);
         var userToUpdate = CreateUserToUpdate();
         if (!AnsiConsole.Confirm("Are you sure you want update this user?"))
@@ -105,26 +96,22 @@ public class UsersController
             return;
         }
 
-        if (await _usersService.UpdateUser(user.Id, userToUpdate))
-        {
-            AnsiConsole.MarkupLine($"User updated successfully!");
-            UserInput.PromptAnyKeyToContinue();
-        }
+        await _usersService.UpdateUser(user.Id, userToUpdate);
     }
 
     private User? GetUserFromList(List<User> users)
     {
-        var input = UserInput.PromptNumberInput("Enter user ID (or press 0 to exit):");
-        var index = Validation.ValidateListIndex(input, users);
+        var input = UserInput.PromptPositiveIntegerAllowZero("Enter user ID (or press 0 to exit):");
+        var index = Validation.IsValidListIndex(input, users);
         return users.ElementAtOrDefault(index);
     }
     private UserCreate CreateNewUser()
     {
         AnsiConsole.MarkupLine("Creating a new user. Enter information:");
-        var firstName = UserInput.PromptStringInput("First name:");
-        var lastName = UserInput.PromptStringInput("Last name:");
-        var email = UserInput.PromptStringInput("Email:");
-        email = Validation.ValidateEmailInput(email);
+        var firstName = UserInput.PromptString("First name:");
+        var lastName = UserInput.PromptString("Last name:");
+        var email = UserInput.PromptString("Email:");
+        email = Validation.IsValidEmailInput(email);
 
         return new UserCreate(firstName, lastName, email);
     }
@@ -132,12 +119,12 @@ public class UsersController
     private UserUpdate CreateUserToUpdate()
     {
         AnsiConsole.MarkupLine("Enter new information (or leave empty):");
-        var firstName = UserInput.PromptStringAllowEmptyInput("First name:");
-        var lastName = UserInput.PromptStringAllowEmptyInput("Last name:");
-        var email = UserInput.PromptStringAllowEmptyInput("Email:");
+        var firstName = UserInput.PromptStringAllowEmpty("First name:");
+        var lastName = UserInput.PromptStringAllowEmpty("Last name:");
+        var email = UserInput.PromptStringAllowEmpty("Email:");
         if (!String.IsNullOrWhiteSpace(email))
         {
-            email = Validation.ValidateEmailInput(email);
+            email = Validation.IsValidEmailInput(email);
         }
         return new UserUpdate(firstName, lastName, email);
     }
