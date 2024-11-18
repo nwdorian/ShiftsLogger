@@ -38,6 +38,7 @@ public class UsersMenu : BaseMenu
                     await _usersController.UpdateUser();
                     break;
                 case Options.EditShifts:
+                    await _usersController.UpdateUserShifts();
                     break;
                 case Options.MainMenu:
                     exit = true;

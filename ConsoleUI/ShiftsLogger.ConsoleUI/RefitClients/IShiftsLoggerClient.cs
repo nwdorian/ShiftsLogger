@@ -14,7 +14,7 @@ public interface IShiftsLoggerClient
     Task<ApiResponse<List<Shift>>> GetShiftsByUserId(Guid id);
 
     [Post("/users")]
-    Task<ApiResponse<User>> CreateUser(UserCreate user);
+    Task<ApiResponse<User>> CreateUser([Body] UserCreate user);
 
     [Delete("/users/{id}")]
     Task<IApiResponse> DeleteUser(Guid id);
@@ -26,11 +26,14 @@ public interface IShiftsLoggerClient
     Task<ApiResponse<List<Shift>>> GetAllShifts();
 
     [Post("/shifts")]
-    Task<ApiResponse<Shift>> CreateShift(ShiftCreate shift);
+    Task<ApiResponse<Shift>> CreateShift([Body] ShiftCreate shift);
 
     [Delete("/shifts/{id}")]
     Task<IApiResponse> DeleteShift(Guid id);
 
     [Put("/shifts/{id}")]
     Task<IApiResponse> UpdateShift(Guid id, [Body] ShiftUpdate shift);
+
+    [Put("/users/{id}/shifts")]
+    Task<IApiResponse> UpdateUserShifts(Guid id, [Body] List<Shift> shifts);
 }

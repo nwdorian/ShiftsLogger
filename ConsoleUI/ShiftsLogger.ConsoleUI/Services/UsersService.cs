@@ -32,7 +32,7 @@ public class UsersService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
         }
         return users;
     }
@@ -58,7 +58,7 @@ public class UsersService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
         }
         return shifts;
     }
@@ -83,7 +83,7 @@ public class UsersService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
         }
     }
 
@@ -107,7 +107,7 @@ public class UsersService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
         }
     }
 
@@ -131,7 +131,31 @@ public class UsersService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
+        }
+    }
+
+    public async Task UpdateUserShifts(Guid id, List<Shift> shifts)
+    {
+        try
+        {
+            var response = await _apiClient.UpdateUserShifts(id, shifts);
+
+            if (response.IsSuccessful)
+            {
+                AnsiConsole.MarkupLine($"User shifts updated successfully!");
+                UserInput.PromptAnyKeyToContinue();
+            }
+            else
+            {
+                AnsiConsole.MarkupLine($"[red]{response.Error.Content ?? response.Error.Message}[/]");
+                UserInput.PromptAnyKeyToContinue();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("There was an error: " + ex.Message);
+            UserInput.PromptAnyKeyToContinue();
         }
     }
 }

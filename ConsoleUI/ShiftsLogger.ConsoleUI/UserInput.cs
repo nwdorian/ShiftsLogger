@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using ShiftsLogger.ConsoleUI.Models;
+using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI;
 public static class UserInput
@@ -64,5 +65,30 @@ public static class UserInput
             input = UserInput.PromptString("Enter a valid email adress:");
         }
         return input;
+    }
+
+    public static List<Shift> GetUserShifts(List<Shift> allShifts, List<Shift> userShifts)
+    {
+        var multiSelection = new MultiSelectionPrompt<Shift>();
+        multiSelection.Title("Select shifts: ")
+            .NotRequired()
+            .InstructionsText(
+            "[red]Note[/]: Shifts already associated with a user are pre-selected!\n" +
+            "[grey](Press [blue]<space>[/] to toggle a shift,[green]<enter>[/] to accept)[/]"
+            )
+            .AddChoices(allShifts)
+            .UseConverter(s => $"{s.StartTime.ToShortDateString()} {s.StartTime.ToShortTimeString()}-{s.EndTime.ToShortTimeString()}");
+
+
+        foreach (var shift in allShifts)
+        {
+            if (userShifts.Any(s => s.Id == shift.Id))
+            {
+                multiSelection.Select(shift);
+            }
+        }
+
+        AnsiConsole.Clear();
+        return AnsiConsole.Prompt(multiSelection);
     }
 }
