@@ -1,5 +1,4 @@
-﻿using ShiftsLogger.ConsoleUI.Models;
-using ShiftsLogger.ConsoleUI.Services;
+﻿using ShiftsLogger.ConsoleUI.Services;
 using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI.Controllers;
@@ -20,12 +19,12 @@ public class ShiftsController
         }
 
         TableVisualization.DisplayShiftsTable(shifts);
-        var shift = GetShiftFromList(shifts);
+        var shift = Helpers.GetShiftFromList(shifts);
     }
 
     public async Task AddShift()
     {
-        var shift = CreateNewShift();
+        var shift = Helpers.CreateNewShift();
         TableVisualization.DisplayShiftTable(shift);
         if (!AnsiConsole.Confirm("Are you sure you want to create a new shift?"))
         {
@@ -44,7 +43,7 @@ public class ShiftsController
         }
 
         TableVisualization.DisplayShiftsTable(shifts);
-        var shift = GetShiftFromList(shifts);
+        var shift = Helpers.GetShiftFromList(shifts);
         if (shift is null)
         {
             return;
@@ -68,50 +67,19 @@ public class ShiftsController
         }
 
         TableVisualization.DisplayShiftsTable(shifts);
-        var shift = GetShiftFromList(shifts);
+        var shift = Helpers.GetShiftFromList(shifts);
         if (shift is null)
         {
             return;
         }
 
         TableVisualization.DisplayShiftTable(shift);
-        var shiftToUpdate = CreateShiftToUpdate(shift);
+        var shiftToUpdate = Helpers.CreateShiftToUpdate(shift);
         if (!AnsiConsole.Confirm("Are you sure you want update this shift?"))
         {
             return;
         }
 
         await _shiftsService.UpdateShift(shift.Id, shiftToUpdate);
-    }
-    private Shift? GetShiftFromList(List<Shift> shifts)
-    {
-        var input = UserInput.PromptPositiveIntegerAllowZero("Enter shift ID (or press 0 to exit):");
-        var index = Validation.IsValidListIndex(input, shifts);
-        return shifts.ElementAtOrDefault(index);
-    }
-
-    private ShiftCreate CreateNewShift()
-    {
-        AnsiConsole.MarkupLine("Creating a new shift. Enter information:");
-        AnsiConsole.MarkupLine("Format: [blue]YYYY-MM-DD HH:MM[/]");
-        var startDateTime = UserInput.PromptDateTime("Start date and time:");
-        var duration = UserInput.PromptPositiveInteger("Duration in hours:");
-        var endDateTime = startDateTime.AddHours(duration);
-        return new ShiftCreate(startDateTime, endDateTime);
-    }
-
-    private ShiftUpdate CreateShiftToUpdate(Shift shift)
-    {
-        AnsiConsole.MarkupLine("Enter new information:");
-        AnsiConsole.MarkupLine("Format: [blue]YYYY-MM-DD HH:MM[/]");
-        var startDateTime = UserInput.PromptDateTimeAllowEmpty("Start date and time (leave empty to skip):");
-        if (startDateTime == DateTime.MinValue)
-        {
-            startDateTime = shift.StartTime;
-        }
-        var duration = UserInput.PromptPositiveInteger("Duration in hours:");
-        var endDateTime = startDateTime.AddHours(duration);
-        return new ShiftUpdate(startDateTime, endDateTime);
-
     }
 }

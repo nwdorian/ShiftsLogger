@@ -4,26 +4,6 @@ using System.Net.Mail;
 namespace ShiftsLogger.ConsoleUI;
 public static class Validation
 {
-    public static int IsValidListIndex<T>(int input, List<T> list) where T : class
-    {
-        while (input > list.Count)
-        {
-            AnsiConsole.MarkupLine($"[red]Invalid input![/]");
-            input = UserInput.PromptPositiveIntegerAllowZero("Select a valid Id (or press 0 to exit):");
-        }
-        return input - 1;
-    }
-
-    public static string IsValidEmailInput(string input)
-    {
-        while (!IsValidEmail(input))
-        {
-            AnsiConsole.MarkupLine($"[red]Invalid input![/]");
-            input = UserInput.PromptString("Enter a valid email adress:");
-        }
-        return input;
-    }
-
     public static bool IsValidEmail(string input)
     {
         try
@@ -31,7 +11,7 @@ public static class Validation
             var email = new MailAddress(input);
             return true;
         }
-        catch (Exception)
+        catch
         {
             return false;
         }
@@ -39,21 +19,13 @@ public static class Validation
 
     public static ValidationResult IsValidDateTime(DateTime input)
     {
-        try
+
+        var timeOnly = new TimeOnly(input.Hour, input.Minute);
+        if (timeOnly.Hour == 0 && timeOnly.Minute == 0)
         {
-            var dateOnly = new DateOnly(input.Year, input.Month, input.Day);
-            var timeOnly = new TimeOnly(input.Hour, input.Minute);
-            if (timeOnly.Hour == 0 && timeOnly.Minute == 0)
-            {
-                return ValidationResult.Error("[red]Start time was not set![/]");
-            }
-            var date = new DateTime(dateOnly, timeOnly);
-            return ValidationResult.Success();
+            return ValidationResult.Error("[red]Start time was not set![/]");
         }
-        catch (Exception)
-        {
-            return ValidationResult.Error("[red]Invalid date time input![/]");
-        }
+        return ValidationResult.Success();
     }
 
     public static ValidationResult IsGreaterOrEqualToZero(int input)

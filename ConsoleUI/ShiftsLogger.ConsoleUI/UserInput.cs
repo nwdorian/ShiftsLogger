@@ -8,12 +8,14 @@ public static class UserInput
         AnsiConsole.Write("Press any key to continue...");
         Console.ReadLine();
     }
-    public static int PromptPositiveIntegerAllowZero(string prompt)
+
+    public static int PromptPositiveInteger(string prompt, bool allowZero = true)
     {
         return AnsiConsole.Prompt(
             new TextPrompt<int>(prompt)
             .ValidationErrorMessage("[red]Input must be an integer![/]")
-                .Validate(Validation.IsGreaterOrEqualToZero));
+            .Validate(allowZero ? Validation.IsGreaterOrEqualToZero : Validation.IsGreaterThanZero)
+            );
     }
 
     public static string PromptString(string prompt)
@@ -44,12 +46,23 @@ public static class UserInput
             .AllowEmpty());
     }
 
-    public static int PromptPositiveInteger(string prompt)
+    public static int CheckValidListIndex<T>(int input, List<T> list) where T : class
     {
-        return AnsiConsole.Prompt(
-            new TextPrompt<int>(prompt)
-            .ValidationErrorMessage("[red]Input must be an integer![/]")
-            .Validate(Validation.IsGreaterThanZero)
-            );
+        while (input > list.Count)
+        {
+            AnsiConsole.MarkupLine($"[red]Invalid input![/]");
+            input = UserInput.PromptPositiveInteger("Select a valid Id (or press 0 to exit):");
+        }
+        return input - 1;
+    }
+
+    public static string CheckValidEmailInput(string input)
+    {
+        while (!Validation.IsValidEmail(input))
+        {
+            AnsiConsole.MarkupLine($"[red]Invalid input![/]");
+            input = UserInput.PromptString("Enter a valid email adress:");
+        }
+        return input;
     }
 }
