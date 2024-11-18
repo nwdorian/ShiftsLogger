@@ -202,7 +202,7 @@ public class UserRepository : IUserRepository
 
             await _context.SaveChangesAsync();
 
-            response.Data = _mapper.Map<User>(userEntity);
+            response.Message = "Successfuly updated!";
             response.Success = true;
         }
         catch (Exception ex)

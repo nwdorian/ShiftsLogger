@@ -8,4 +8,7 @@ public interface IShiftService
     Task<ApiResponse<Shift>> CreateAsync(Shift shift);
     Task<ApiResponse<Shift>> DeleteAsync(Guid id);
     Task<ApiResponse<Shift>> UpdateAsync(Guid id, Shift shift);
+    Task<ApiResponse<Shift>> UpdateUsersAsync(Guid id, List<User> users);
+    Task<ApiResponse<List<User>>> GetUsersByShiftIdAsync(Guid id);
+
 }

@@ -8,7 +8,7 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<User, UserRead>();
+        CreateMap<User, UserRead>().ReverseMap();
         CreateMap<UserCreate, User>();
         CreateMap<UserUpdate, User>();
     }
