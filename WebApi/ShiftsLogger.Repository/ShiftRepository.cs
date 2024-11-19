@@ -229,10 +229,18 @@ public class ShiftRepository : IShiftRepository
                 shiftEntity.Users.AddRange(userEntitiesToAdd);
             }
 
-            await _context.SaveChangesAsync();
+            if (usersToRemove.Count == 0 && usersToAdd.Count == 0)
+            {
+                response.Message = "No users to update!";
+                response.Success = false;
+            }
+            else
+            {
+                await _context.SaveChangesAsync();
 
-            response.Message = "Successfuly updated!";
-            response.Success = true;
+                response.Message = "Successfuly updated!";
+                response.Success = true;
+            }
         }
         catch (Exception ex)
         {

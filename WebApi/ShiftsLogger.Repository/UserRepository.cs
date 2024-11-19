@@ -200,10 +200,18 @@ public class UserRepository : IUserRepository
                 userEntity.Shifts.AddRange(shiftEntitiesToAdd);
             }
 
-            await _context.SaveChangesAsync();
+            if (shiftsToRemove.Count == 0 && shiftsToAdd.Count == 0)
+            {
+                response.Message = "No shifts to update!";
+                response.Success = false;
+            }
+            else
+            {
+                await _context.SaveChangesAsync();
 
-            response.Message = "Successfuly updated!";
-            response.Success = true;
+                response.Message = "Successfuly updated!";
+                response.Success = true;
+            }
         }
         catch (Exception ex)
         {
