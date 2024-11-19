@@ -37,9 +37,6 @@ public class UsersMenu : BaseMenu
                 case Options.UpdateUser:
                     await _usersController.UpdateUser();
                     break;
-                case Options.EditShifts:
-                    await _usersController.UpdateUserShifts();
-                    break;
                 case Options.MainMenu:
                     exit = true;
                     break;
@@ -53,7 +50,6 @@ public class UsersMenu : BaseMenu
         AddUser,
         DeleteUser,
         UpdateUser,
-        EditShifts,
         MainMenu
     }
 }

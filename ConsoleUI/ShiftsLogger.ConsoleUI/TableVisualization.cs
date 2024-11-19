@@ -90,4 +90,21 @@ public static class TableVisualization
         AnsiConsole.Clear();
         AnsiConsole.Write(panel);
     }
+
+    internal static void DisplayShiftDetailsTable(Shift shift, List<User> shiftUsers)
+    {
+        var usersTable = new Table();
+        usersTable.Border = TableBorder.MinimalHeavyHead;
+        usersTable.AddColumns("Name", "Email");
+
+        foreach (var user in shiftUsers)
+        {
+            usersTable.AddRow(user.ToString(), user.Email ?? "Email not found!");
+        }
+
+        var panel = new Panel(usersTable);
+        panel.Header = new PanelHeader(shift.ToString()).Centered();
+        AnsiConsole.Clear();
+        AnsiConsole.Write(panel);
+    }
 }

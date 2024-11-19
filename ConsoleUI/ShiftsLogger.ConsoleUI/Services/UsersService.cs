@@ -51,7 +51,6 @@ public class UsersService
             else
             {
                 AnsiConsole.MarkupLine($"[red]{response.Error.Content ?? response.Error.Message}[/]");
-                UserInput.PromptAnyKeyToContinue();
             }
 
         }
@@ -71,7 +70,7 @@ public class UsersService
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine("New user created successfully!");
+                AnsiConsole.MarkupLine("[green]New user created successfully![/]");
                 UserInput.PromptAnyKeyToContinue();
             }
             else
@@ -95,7 +94,7 @@ public class UsersService
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine($"User deleted successfully!");
+                AnsiConsole.MarkupLine($"[green]User deleted successfully![/]");
                 UserInput.PromptAnyKeyToContinue();
             }
             else
@@ -119,7 +118,7 @@ public class UsersService
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine($"User updated successfully!");
+                AnsiConsole.MarkupLine($"[green]User updated successfully![/]");
                 UserInput.PromptAnyKeyToContinue();
             }
             else
@@ -143,7 +142,7 @@ public class UsersService
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine($"User shifts updated successfully!");
+                AnsiConsole.MarkupLine($"[green]User shifts updated successfully![/]");
                 UserInput.PromptAnyKeyToContinue();
             }
             else

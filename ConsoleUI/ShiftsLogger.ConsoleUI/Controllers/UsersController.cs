@@ -28,14 +28,24 @@ public class UsersController
             return;
         }
 
-        var shifts = await _usersService.GetShiftsByUserId(user.Id);
+        var shifts = await _shiftsService.GetAll();
         if (shifts.Count == 0)
         {
             return;
         }
 
-        TableVisualization.DisplayUserDetailsTable(user, shifts);
-        UserInput.PromptAnyKeyToContinue();
+        var userShifts = await _usersService.GetShiftsByUserId(user.Id);
+        if (userShifts.Count > 0)
+        {
+            TableVisualization.DisplayUserDetailsTable(user, userShifts);
+        }
+        if (!AnsiConsole.Confirm($"Update shifts for [blue]{user.ToString()}[/]?"))
+        {
+            return;
+        }
+
+        var shiftsToUpdate = UserInput.GetShiftsToUpdate(shifts, userShifts);
+        await _usersService.UpdateUserShifts(user.Id, shiftsToUpdate);
     }
 
     public async Task AddUser()
@@ -98,31 +108,5 @@ public class UsersController
         }
 
         await _usersService.UpdateUser(user.Id, userToUpdate);
-    }
-
-    public async Task UpdateUserShifts()
-    {
-        var users = await _usersService.GetAll();
-        if (users.Count == 0)
-        {
-            return;
-        }
-
-        TableVisualization.DisplayUsersTable(users);
-        var user = Helpers.GetUserFromList(users);
-        if (user is null)
-        {
-            return;
-        }
-
-        var userShifts = await _usersService.GetShiftsByUserId(user.Id);
-        var shifts = await _shiftsService.GetAll();
-        if (shifts.Count == 0)
-        {
-            return;
-        }
-
-        var shiftsToUpdate = UserInput.GetUserShifts(shifts, userShifts);
-        await _usersService.UpdateUserShifts(user.Id, shiftsToUpdate);
     }
 }

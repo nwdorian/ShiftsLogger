@@ -4,21 +4,32 @@ using System.Net.Mail;
 namespace ShiftsLogger.ConsoleUI;
 public static class Validation
 {
-    public static bool IsValidEmail(string input)
+    public static ValidationResult IsValidEmail(string input)
     {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return ValidationResult.Success();
+        }
+
         try
         {
             var email = new MailAddress(input);
-            return true;
+            return ValidationResult.Success();
         }
         catch
         {
-            return false;
+            return ValidationResult.Error("[red]Invalid email format! (example: username@domain.com)[/]");
+
         }
+
     }
 
     public static ValidationResult IsValidDateTime(DateTime input)
     {
+        if (input == DateTime.MinValue)
+        {
+            return ValidationResult.Success();
+        }
 
         var timeOnly = new TimeOnly(input.Hour, input.Minute);
         if (timeOnly.Hour == 0 && timeOnly.Minute == 0)

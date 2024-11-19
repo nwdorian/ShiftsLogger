@@ -32,10 +32,35 @@ public class ShiftsService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
         }
         return shifts;
     }
+
+    public async Task<List<User>> GetUsersByShiftId(Guid id)
+    {
+        var users = new List<User>();
+        try
+        {
+            var response = await _apiClient.GetUsersByShiftId(id);
+
+            if (response.IsSuccessful)
+            {
+                users = response.Content;
+            }
+            else
+            {
+                AnsiConsole.MarkupLine($"[red]{response.Error.Content ?? response.Error.Message}[/]");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("There was an error: " + ex.Message);
+            UserInput.PromptAnyKeyToContinue();
+        }
+        return users;
+    }
+
 
     public async Task CreateShift(ShiftCreate shift)
     {
@@ -45,7 +70,7 @@ public class ShiftsService
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine("New shift created successfully!");
+                AnsiConsole.MarkupLine("[green]New shift created successfully![/]");
                 UserInput.PromptAnyKeyToContinue();
             }
             else
@@ -57,7 +82,7 @@ public class ShiftsService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
         }
     }
 
@@ -69,7 +94,7 @@ public class ShiftsService
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine($"Shift deleted successfully!");
+                AnsiConsole.MarkupLine($"[green]Shift deleted successfully![/]");
                 UserInput.PromptAnyKeyToContinue();
             }
             else
@@ -81,7 +106,7 @@ public class ShiftsService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
         }
     }
 
@@ -93,7 +118,7 @@ public class ShiftsService
 
             if (response.IsSuccessful)
             {
-                AnsiConsole.MarkupLine($"Shift updated successfully!");
+                AnsiConsole.MarkupLine($"[green]Shift updated successfully![/]");
                 UserInput.PromptAnyKeyToContinue();
             }
             else
@@ -105,7 +130,31 @@ public class ShiftsService
         catch (Exception ex)
         {
             Console.WriteLine("There was an error: " + ex.Message);
-            Console.ReadLine();
+            UserInput.PromptAnyKeyToContinue();
+        }
+    }
+
+    public async Task UpdateShiftUsers(Guid id, List<User> users)
+    {
+        try
+        {
+            var response = await _apiClient.UpdateShiftUsers(id, users);
+
+            if (response.IsSuccessful)
+            {
+                AnsiConsole.MarkupLine($"[green]Shift users updated successfully![/]");
+                UserInput.PromptAnyKeyToContinue();
+            }
+            else
+            {
+                AnsiConsole.MarkupLine($"[red]{response.Error.Content ?? response.Error.Message}[/]");
+                UserInput.PromptAnyKeyToContinue();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("There was an error: " + ex.Message);
+            UserInput.PromptAnyKeyToContinue();
         }
     }
 }

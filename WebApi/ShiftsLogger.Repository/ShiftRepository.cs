@@ -171,7 +171,7 @@ public class ShiftRepository : IShiftRepository
 
             if (users.Count == 0)
             {
-                response.Message = $"No shifts found!";
+                response.Message = $"No users found!";
                 response.Success = false;
             }
             else

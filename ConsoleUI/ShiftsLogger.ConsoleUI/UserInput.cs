@@ -10,85 +10,130 @@ public static class UserInput
         Console.ReadLine();
     }
 
-    public static int PromptPositiveInteger(string prompt, bool allowZero = true)
+    public static int PromptPositiveInteger(string displayMessage, AllowZero limit)
     {
-        return AnsiConsole.Prompt(
-            new TextPrompt<int>(prompt)
-            .ValidationErrorMessage("[red]Input must be an integer![/]")
-            .Validate(allowZero ? Validation.IsGreaterOrEqualToZero : Validation.IsGreaterThanZero)
-            );
+        var prompt = new TextPrompt<int>(displayMessage);
+        prompt.ValidationErrorMessage("[red]Input must be an integer![/]");
+
+        if (limit == AllowZero.True)
+        {
+            prompt.Validate(Validation.IsGreaterOrEqualToZero);
+        }
+
+        if (limit == AllowZero.False)
+        {
+            prompt.Validate(Validation.IsGreaterThanZero);
+        }
+
+        return AnsiConsole.Prompt(prompt);
     }
 
-    public static string PromptString(string prompt)
+    public static string PromptString(string displayMessage, AllowEmpty option, Validate validation = Validate.None)
     {
-        return AnsiConsole.Ask<string>(prompt);
+        var prompt = new TextPrompt<string>(displayMessage);
+
+        if (option == AllowEmpty.True)
+        {
+            prompt.AllowEmpty();
+        }
+
+        if (validation == Validate.Email)
+        {
+            prompt.Validate(Validation.IsValidEmail);
+        }
+
+        return AnsiConsole.Prompt(prompt);
     }
 
-    public static string PromptStringAllowEmpty(string prompt)
+    public static DateTime PromptDateTime(string displayMessage, AllowEmpty option)
     {
-        return AnsiConsole.Prompt(
-            new TextPrompt<string>(prompt)
-            .AllowEmpty());
+        var prompt = new TextPrompt<DateTime>(displayMessage)
+        .ValidationErrorMessage("[red]Invalid format![/]")
+        .Validate(Validation.IsValidDateTime);
+
+        if (option == AllowEmpty.True)
+        {
+            prompt.AllowEmpty();
+        }
+
+        return AnsiConsole.Prompt(prompt);
     }
 
-    public static DateTime PromptDateTime(string prompt)
-    {
-        return AnsiConsole.Prompt(
-            new TextPrompt<DateTime>(prompt)
-            .ValidationErrorMessage("[red]Invalid format![/]")
-            .Validate(Validation.IsValidDateTime));
-    }
-
-    public static DateTime PromptDateTimeAllowEmpty(string prompt)
-    {
-        return AnsiConsole.Prompt(
-            new TextPrompt<DateTime>(prompt)
-            .ValidationErrorMessage("[red]Invalid format![/]")
-            .AllowEmpty());
-    }
-
-    public static int CheckValidListIndex<T>(int input, List<T> list) where T : class
+    public static int GetValidListIndex<T>(int input, List<T> list) where T : class
     {
         while (input > list.Count)
         {
             AnsiConsole.MarkupLine($"[red]Invalid input![/]");
-            input = UserInput.PromptPositiveInteger("Select a valid Id (or press 0 to exit):");
+            input = PromptPositiveInteger("Select a valid Id (or press 0 to exit):", AllowZero.True);
         }
         return input - 1;
     }
 
-    public static string CheckValidEmailInput(string input)
+    public static List<Shift> GetShiftsToUpdate(List<Shift> allShifts, List<Shift> userShifts)
     {
-        while (!Validation.IsValidEmail(input))
-        {
-            AnsiConsole.MarkupLine($"[red]Invalid input![/]");
-            input = UserInput.PromptString("Enter a valid email adress:");
-        }
-        return input;
-    }
-
-    public static List<Shift> GetUserShifts(List<Shift> allShifts, List<Shift> userShifts)
-    {
-        var multiSelection = new MultiSelectionPrompt<Shift>();
-        multiSelection.Title("Select shifts: ")
+        var prompt = new MultiSelectionPrompt<Shift>();
+        prompt.Title($"Select shifts:")
             .NotRequired()
             .InstructionsText(
-            "[red]Note[/]: Shifts already associated with a user are pre-selected!\n" +
+            "[grey]Shifts already associated with a user are[/] pre-selected!\n" +
             "[grey](Press [blue]<space>[/] to toggle a shift,[green]<enter>[/] to accept)[/]"
             )
             .AddChoices(allShifts)
-            .UseConverter(s => $"{s.StartTime.ToShortDateString()} {s.StartTime.ToShortTimeString()}-{s.EndTime.ToShortTimeString()}");
+            .UseConverter(s => s.ToString());
 
 
         foreach (var shift in allShifts)
         {
             if (userShifts.Any(s => s.Id == shift.Id))
             {
-                multiSelection.Select(shift);
+                prompt.Select(shift);
             }
         }
 
-        AnsiConsole.Clear();
-        return AnsiConsole.Prompt(multiSelection);
+        AnsiConsole.WriteLine();
+        return AnsiConsole.Prompt(prompt);
     }
+
+    public static List<User> GetUsersToUpdate(List<User> allUsers, List<User> shiftUsers)
+    {
+        var prompt = new MultiSelectionPrompt<User>();
+        prompt.Title("Select users:")
+            .NotRequired()
+            .InstructionsText(
+            "[grey]Users already associated with a shift are[/] pre-selected!\n" +
+            "[grey](Press [blue]<space>[/] to toggle a shift,[green]<enter>[/] to accept)[/]"
+            )
+            .AddChoices(allUsers)
+            .UseConverter(u => u.ToString());
+
+        foreach (var user in allUsers)
+        {
+            if (shiftUsers.Any(u => u.Id == user.Id))
+            {
+                prompt.Select(user);
+            }
+        }
+
+        AnsiConsole.WriteLine();
+        return AnsiConsole.Prompt(prompt);
+    }
+}
+
+public enum AllowZero
+{
+    False,
+    True
+}
+
+public enum AllowEmpty
+{
+    False,
+    True
+}
+
+public enum Validate
+{
+    Email,
+    DateTime,
+    None
 }

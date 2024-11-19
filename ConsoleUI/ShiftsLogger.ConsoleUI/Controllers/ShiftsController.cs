@@ -1,14 +1,17 @@
-﻿using ShiftsLogger.ConsoleUI.Services;
+﻿using ShiftsLogger.ConsoleUI.Models;
+using ShiftsLogger.ConsoleUI.Services;
 using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI.Controllers;
 public class ShiftsController
 {
     private readonly ShiftsService _shiftsService;
+    private readonly UsersService _usersService;
 
-    public ShiftsController(ShiftsService shiftsService)
+    public ShiftsController(ShiftsService shiftsService, UsersService usersService)
     {
         _shiftsService = shiftsService;
+        _usersService = usersService;
     }
     public async Task GetAllShifts()
     {
@@ -20,6 +23,29 @@ public class ShiftsController
 
         TableVisualization.DisplayShiftsTable(shifts);
         var shift = Helpers.GetShiftFromList(shifts);
+        if (shift is null)
+        {
+            return;
+        }
+
+        var users = await _usersService.GetAll();
+        if (users.Count == 0)
+        {
+            return;
+        }
+
+        var shiftUsers = await _shiftsService.GetUsersByShiftId(shift.Id);
+        if (shiftUsers.Count > 0)
+        {
+            TableVisualization.DisplayShiftDetailsTable(shift, shiftUsers);
+        }
+        if (!AnsiConsole.Confirm($"Update users for [blue]{shift.ToString()}[/]?"))
+        {
+            return;
+        }
+
+        var usersToUpdate = UserInput.GetUsersToUpdate(users, shiftUsers);
+        await _shiftsService.UpdateShiftUsers(shift.Id, usersToUpdate);
     }
 
     public async Task AddShift()
@@ -75,11 +101,27 @@ public class ShiftsController
 
         TableVisualization.DisplayShiftTable(shift);
         var shiftToUpdate = Helpers.CreateShiftToUpdate(shift);
+        if (!HasChanges(shiftToUpdate))
+        {
+            AnsiConsole.MarkupLine("[red]No changes to update![/]");
+            UserInput.PromptAnyKeyToContinue();
+            return;
+        }
+
         if (!AnsiConsole.Confirm("Are you sure you want update this shift?"))
         {
             return;
         }
 
         await _shiftsService.UpdateShift(shift.Id, shiftToUpdate);
+    }
+
+    private static bool HasChanges(ShiftUpdate shift)
+    {
+        if (shift.StartTime == DateTime.MinValue && shift.EndTime == DateTime.MinValue)
+        {
+            return false;
+        }
+        return true;
     }
 }
