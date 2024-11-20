@@ -56,4 +56,13 @@ public static class Validation
             _ => ValidationResult.Success()
         };
     }
+
+    public static ValidationResult IsGreaterThanZero(double input)
+    {
+        return input switch
+        {
+            <= 0 => ValidationResult.Error("[red]Input must be greater than 0![/]"),
+            _ => ValidationResult.Success()
+        };
+    }
 }

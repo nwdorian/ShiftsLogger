@@ -202,7 +202,7 @@ public class UserRepository : IUserRepository
 
             if (shiftsToRemove.Count == 0 && shiftsToAdd.Count == 0)
             {
-                response.Message = "No shifts to update!";
+                response.Message = "No changes to update!";
                 response.Success = false;
             }
             else

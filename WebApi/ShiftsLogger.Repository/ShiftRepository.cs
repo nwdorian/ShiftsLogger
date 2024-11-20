@@ -231,7 +231,7 @@ public class ShiftRepository : IShiftRepository
 
             if (usersToRemove.Count == 0 && usersToAdd.Count == 0)
             {
-                response.Message = "No users to update!";
+                response.Message = "No changes to update!";
                 response.Success = false;
             }
             else

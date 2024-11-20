@@ -32,7 +32,7 @@ public static class Helpers
 
     public static Shift? GetShiftFromList(List<Shift> shifts)
     {
-        var input = UserInput.PromptPositiveInteger("Enter shift ID (or press 0 to exit):", AllowZero.True);
+        var input = UserInput.PromptPositiveInteger("Enter shift Id (or press 0 to exit):", AllowZero.True);
         var index = UserInput.GetValidListIndex(input, shifts);
         return shifts.ElementAtOrDefault(index);
     }
@@ -42,22 +42,28 @@ public static class Helpers
         AnsiConsole.MarkupLine("Creating a new shift. Enter information:");
         AnsiConsole.MarkupLine("Format: [blue]YYYY-MM-DD HH:MM[/]");
         var start = UserInput.PromptDateTime("Start date and time:", AllowEmpty.False);
-        var duration = UserInput.PromptPositiveInteger("Duration in hours:", AllowZero.False);
+        var duration = UserInput.PromptPositiveDouble("Duration in hours:");
         var end = start.AddHours(duration);
         return new ShiftCreate(start, end);
     }
 
     public static ShiftUpdate CreateShiftToUpdate(Shift shift)
     {
-        AnsiConsole.MarkupLine("Enter new information:");
+        AnsiConsole.MarkupLine("Enter new information or leave empty to skip:");
         AnsiConsole.MarkupLine("Format: [blue]YYYY-MM-DD HH:MM[/]");
-        var start = UserInput.PromptDateTime("Start date and time (leave empty to skip):", AllowEmpty.True);
-        var duration = UserInput.PromptPositiveInteger("Duration in hours (enter 0 to skip):", AllowZero.True);
+        var start = UserInput.PromptDateTime("Start date and time:", AllowEmpty.True);
+        if (start == DateTime.MinValue)
+        {
+            start = shift.StartTime;
+        }
 
-        return new ShiftUpdate
-            (
-            start,
-            duration == 0 ? DateTime.MinValue : start.AddHours(shift.GetDuration())
-            );
+        var duration = UserInput.PromptPositiveDouble("Duration in hours", AllowEmpty.True);
+        var end = start.AddHours(duration);
+        if (duration == 0)
+        {
+            end = start.AddHours(shift.GetDuration());
+        }
+
+        return new ShiftUpdate(start, end);
     }
 }

@@ -28,6 +28,20 @@ public static class UserInput
         return AnsiConsole.Prompt(prompt);
     }
 
+    public static double PromptPositiveDouble(string displayMessage, AllowEmpty option = AllowEmpty.False)
+    {
+        var prompt = new TextPrompt<double>(displayMessage);
+        prompt.ValidationErrorMessage("[red]Input must be a decimal number![/]");
+        prompt.Validate(Validation.IsGreaterThanZero);
+
+        if (option == AllowEmpty.True)
+        {
+            prompt.DefaultValue(0);
+        }
+
+        return AnsiConsole.Prompt(prompt);
+    }
+
     public static string PromptString(string displayMessage, AllowEmpty option, Validate validation = Validate.None)
     {
         var prompt = new TextPrompt<string>(displayMessage);

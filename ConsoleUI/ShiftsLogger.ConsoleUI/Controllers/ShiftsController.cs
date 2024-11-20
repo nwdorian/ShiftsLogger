@@ -101,7 +101,7 @@ public class ShiftsController
 
         TableVisualization.DisplayShiftTable(shift);
         var shiftToUpdate = Helpers.CreateShiftToUpdate(shift);
-        if (!HasChanges(shiftToUpdate))
+        if (!HasChanges(shiftToUpdate, shift))
         {
             AnsiConsole.MarkupLine("[red]No changes to update![/]");
             UserInput.PromptAnyKeyToContinue();
@@ -116,9 +116,9 @@ public class ShiftsController
         await _shiftsService.UpdateShift(shift.Id, shiftToUpdate);
     }
 
-    private static bool HasChanges(ShiftUpdate shift)
+    private static bool HasChanges(ShiftUpdate shiftToUpdate, Shift shift)
     {
-        if (shift.StartTime == DateTime.MinValue && shift.EndTime == DateTime.MinValue)
+        if (shift.StartTime.Equals(shift.StartTime) && shift.EndTime.Equals(shift.EndTime))
         {
             return false;
         }

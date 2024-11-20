@@ -1,4 +1,5 @@
-﻿using ShiftsLogger.ConsoleUI.Services;
+﻿using ShiftsLogger.ConsoleUI.Models;
+using ShiftsLogger.ConsoleUI.Services;
 using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleUI.Controllers;
@@ -102,11 +103,29 @@ public class UsersController
 
         TableVisualization.DisplayUserTable(user);
         var userToUpdate = Helpers.CreateUserToUpdate();
+        if (!HasChanges(userToUpdate))
+        {
+            AnsiConsole.MarkupLine("[red]No changes to update![/]");
+            UserInput.PromptAnyKeyToContinue();
+            return;
+        }
+
         if (!AnsiConsole.Confirm("Are you sure you want update this user?"))
         {
             return;
         }
 
         await _usersService.UpdateUser(user.Id, userToUpdate);
+    }
+
+    private static bool HasChanges(UserUpdate user)
+    {
+        if (string.IsNullOrWhiteSpace(user.FirstName) &&
+            string.IsNullOrWhiteSpace(user.LastName) &&
+            string.IsNullOrWhiteSpace(user.Email))
+        {
+            return false;
+        }
+        return true;
     }
 }
