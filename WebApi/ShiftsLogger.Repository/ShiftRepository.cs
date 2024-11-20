@@ -24,12 +24,13 @@ public class ShiftRepository : IShiftRepository
         {
             var shifts = await _context.Shifts
                 .Where(s => s.IsActive == true)
+                .OrderBy(s => s.DateCreated)
                 .ProjectTo<Shift>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             if (shifts.Count == 0)
             {
-                response.Message = "No shifts found in the database!";
+                response.Message = "No shifts found!";
                 response.Success = false;
             }
             else
@@ -155,4 +156,98 @@ public class ShiftRepository : IShiftRepository
         }
         return response;
     }
+
+    public async Task<ApiResponse<List<User>>> GetUsersByShiftIdAsync(Guid id)
+    {
+        var response = new ApiResponse<List<User>>();
+        try
+        {
+            var users = await _context.Shifts
+                .Where(s => s.IsActive == true && s.Id == id)
+                .SelectMany(s => s.Users.Where(u => u.IsActive == true))
+                .OrderBy(u => u.DateCreated)
+                .ProjectTo<User>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            if (users.Count == 0)
+            {
+                response.Message = $"No users found!";
+                response.Success = false;
+            }
+            else
+            {
+                response.Data = users;
+                response.Success = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in ShiftRepository {nameof(GetUsersByShiftIdAsync)}: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
+
+    public async Task<ApiResponse<Shift>> UpdateUsersAsync(Guid id, List<User> users)
+    {
+        var response = new ApiResponse<Shift>();
+
+        try
+        {
+            var shiftEntity = _context.Shifts
+                .Include(s => s.Users.Where(u => u.IsActive == true))
+                .Where(s => s.IsActive == true)
+                .SingleOrDefault(s => s.Id == id);
+
+            if (shiftEntity is null)
+            {
+                response.Message = $"Shift with Id {id} doesn't exist";
+                response.Success = false;
+                return response;
+            }
+
+            var usersToRemove = shiftEntity.Users
+                .Where(ue => !users.Any(u => u.Id == ue.Id))
+                .ToList();
+
+            var usersToAdd = users
+                .Where(u => !shiftEntity.Users.Any(ue => ue.Id == u.Id))
+                .ToList();
+
+            if (usersToRemove.Count != 0)
+            {
+                foreach (var user in usersToRemove)
+                {
+                    shiftEntity.Users.Remove(user);
+                }
+            }
+
+            if (usersToAdd.Count != 0)
+            {
+                var userEntitiesToAdd = _mapper.Map<List<UserEntity>>(usersToAdd);
+                _context.Users.AttachRange(userEntitiesToAdd);
+                shiftEntity.Users.AddRange(userEntitiesToAdd);
+            }
+
+            if (usersToRemove.Count == 0 && usersToAdd.Count == 0)
+            {
+                response.Message = "No changes to update!";
+                response.Success = false;
+            }
+            else
+            {
+                await _context.SaveChangesAsync();
+
+                response.Message = "Successfuly updated!";
+                response.Success = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"Error in ShiftRepository {nameof(UpdateUsersAsync)}: {ex.Message}";
+            response.Success = false;
+        }
+        return response;
+    }
+
 }

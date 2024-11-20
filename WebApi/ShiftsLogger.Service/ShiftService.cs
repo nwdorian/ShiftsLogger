@@ -19,7 +19,6 @@ public class ShiftService : IShiftService
     public async Task<ApiResponse<Shift>> GetByIdAsync(Guid id)
     {
         return await _shiftRepository.GetByIdAsync(id);
-
     }
 
     public async Task<ApiResponse<Shift>> CreateAsync(Shift shift)
@@ -36,18 +35,13 @@ public class ShiftService : IShiftService
     {
         var response = await _shiftRepository.GetByIdAsync(id);
 
-        if (response.Success == false)
+        if (response.Success == false || response.Data is null)
         {
-            response.Message = "Shift not found";
+            return response;
         }
 
         var shift = response.Data;
 
-        if (shift is null)
-        {
-            response.Message = "Shift is null";
-            return response;
-        }
         shift.IsActive = false;
 
         return await _shiftRepository.DeleteAsync(shift);
@@ -58,19 +52,12 @@ public class ShiftService : IShiftService
     {
         var response = await _shiftRepository.GetByIdAsync(id);
 
-        if (response.Success == false)
+        if (response.Success == false || response.Data is null)
         {
-            response.Message = "Shift not found";
             return response;
         }
 
         var existingShift = response.Data;
-
-        if (existingShift is null)
-        {
-            response.Message = "Shift is null";
-            return response;
-        }
 
         if (shift.StartTime != DateTime.MinValue)
         {
@@ -85,5 +72,31 @@ public class ShiftService : IShiftService
         existingShift.DateUpdated = DateTime.Now;
 
         return await _shiftRepository.UpdateAsync(existingShift);
+    }
+
+    public async Task<ApiResponse<Shift>> UpdateUsersAsync(Guid id, List<User> users)
+    {
+        var response = await _shiftRepository.GetByIdAsync(id);
+        if (response.Success == false)
+        {
+            return response;
+        }
+
+        return await _shiftRepository.UpdateUsersAsync(id, users);
+    }
+
+    public async Task<ApiResponse<List<User>>> GetUsersByShiftIdAsync(Guid id)
+    {
+        var response = new ApiResponse<List<User>>();
+        var getByIdResponse = await _shiftRepository.GetByIdAsync(id);
+        if (getByIdResponse.Success == false)
+        {
+            response.Message = getByIdResponse.Message;
+            response.Success = false;
+            return response;
+        }
+
+        response = await _shiftRepository.GetUsersByShiftIdAsync(id);
+        return response;
     }
 }

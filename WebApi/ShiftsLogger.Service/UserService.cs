@@ -36,19 +36,12 @@ public class UserService : IUserService
     {
         var response = await _userRepository.GetByIdAsync(id);
 
-        if (response.Success == false)
+        if (response.Success == false || response.Data is null)
         {
-            response.Message = "User not found!";
             return response;
         }
 
         var user = response.Data;
-
-        if (user is null)
-        {
-            response.Message = "User is null";
-            return response;
-        }
 
         user.IsActive = false;
 
@@ -100,6 +93,17 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<List<Shift>>> GetShiftsByUserIdAsync(Guid id)
     {
-        return await _userRepository.GetShiftsByUserIdAsync(id);
+        var response = new ApiResponse<List<Shift>>();
+        var getByIdResponse = await _userRepository.GetByIdAsync(id);
+        if (getByIdResponse.Success == false)
+        {
+            response.Message = getByIdResponse.Message;
+            response.Success = false;
+            return response;
+        }
+
+        response = await _userRepository.GetShiftsByUserIdAsync(id);
+        return response;
+
     }
 }

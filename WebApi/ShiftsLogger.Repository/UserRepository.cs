@@ -25,12 +25,13 @@ public class UserRepository : IUserRepository
         {
             var users = await _context.Users
                 .Where(u => u.IsActive == true)
+                .OrderBy(u => u.DateCreated)
                 .ProjectTo<User>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             if (users.Count == 0)
             {
-                response.Message = "No users found in the database!";
+                response.Message = "No users found!";
                 response.Success = false;
             }
             else
@@ -199,10 +200,18 @@ public class UserRepository : IUserRepository
                 userEntity.Shifts.AddRange(shiftEntitiesToAdd);
             }
 
-            await _context.SaveChangesAsync();
+            if (shiftsToRemove.Count == 0 && shiftsToAdd.Count == 0)
+            {
+                response.Message = "No changes to update!";
+                response.Success = false;
+            }
+            else
+            {
+                await _context.SaveChangesAsync();
 
-            response.Data = _mapper.Map<User>(userEntity);
-            response.Success = true;
+                response.Message = "Successfuly updated!";
+                response.Success = true;
+            }
         }
         catch (Exception ex)
         {
@@ -220,6 +229,7 @@ public class UserRepository : IUserRepository
             var shifts = await _context.Users
                 .Where(u => u.IsActive == true && u.Id == id)
                 .SelectMany(u => u.Shifts.Where(s => s.IsActive == true))
+                .OrderBy(u => u.DateCreated)
                 .ProjectTo<Shift>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 

@@ -70,7 +70,7 @@ public class ShiftsController : ControllerBase
 
         if (response.Success)
         {
-            return Ok(response.Message);
+            return NoContent();
         }
 
         return BadRequest(response.Message);
@@ -85,7 +85,36 @@ public class ShiftsController : ControllerBase
 
         if (response.Success)
         {
-            return Ok(response.Message);
+            return NoContent();
+        }
+
+        return BadRequest(response.Message);
+    }
+
+    [HttpPut("{id}/users")]
+    public async Task<IActionResult> UpdateUsers(Guid id, List<UserRead> usersRead)
+    {
+        var users = _mapper.Map<List<User>>(usersRead);
+
+        var response = await _shiftService.UpdateUsersAsync(id, users);
+
+        if (response.Success)
+        {
+            return NoContent();
+        }
+
+        return BadRequest(response.Message);
+    }
+
+    [HttpGet("{id}/users")]
+    public async Task<IActionResult> GetUsers(Guid id)
+    {
+        var response = await _shiftService.GetUsersByShiftIdAsync(id);
+
+        if (response.Success)
+        {
+            var shifts = _mapper.Map<List<UserRead>>(response.Data);
+            return Ok(shifts);
         }
 
         return BadRequest(response.Message);
