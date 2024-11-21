@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ShiftsLogger.Common\ShiftsLogger.Common.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Root\ShiftsLogger.Root.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Service.Common\ShiftsLogger.Service.Common.csproj" />
   </ItemGroup>
