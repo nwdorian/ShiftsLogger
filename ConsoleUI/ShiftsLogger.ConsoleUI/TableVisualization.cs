@@ -10,11 +10,9 @@ public static class TableVisualization
         table.Title = new TableTitle("Users Table", "bold");
         table.AddColumns("Id", "Name", "Email");
 
-        var index = 1;
-        foreach (var user in users)
+        foreach (var (index, user) in users.Index())
         {
-            table.AddRow(index.ToString(), user.ToString(), user.Email ?? "Email not found!");
-            index++;
+            table.AddRow((index + 1).ToString(), user.ToString(), user.Email ?? "Email not found!");
         }
         AnsiConsole.Clear();
         AnsiConsole.Write(table);
@@ -36,18 +34,16 @@ public static class TableVisualization
         table.Title = new TableTitle("Shifts");
         table.AddColumns("Id", "Start date", "Start time", "End date", "End time");
 
-        var index = 1;
-        foreach (var shift in shifts)
+        foreach (var (index, shift) in shifts.Index())
         {
             table.AddRow
                 (
-                index.ToString(),
+                (index + 1).ToString(),
                 shift.StartTime.ToShortDateString(),
                 shift.StartTime.ToShortTimeString(),
                 shift.EndTime.ToShortDateString(),
                 shift.EndTime.ToShortTimeString()
                 );
-            index++;
         }
         AnsiConsole.Write(table);
     }
