@@ -6,10 +6,10 @@ namespace ShiftsLogger.WebApi.Profiles;
 
 public class UserProfile : Profile
 {
-    public UserProfile()
-    {
-        CreateMap<User, UserRead>().ReverseMap();
-        CreateMap<UserCreate, User>();
-        CreateMap<UserUpdate, User>();
-    }
+	public UserProfile()
+	{
+		CreateMap<User, UserRead>().ReverseMap();
+		CreateMap<UserCreate, User>();
+		CreateMap<UserUpdate, User>();
+	}
 }
