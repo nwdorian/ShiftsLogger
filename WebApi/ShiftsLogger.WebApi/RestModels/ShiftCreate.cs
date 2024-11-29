@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using ShiftsLogger.Common.Validation;
 
 namespace ShiftsLogger.WebApi.RestModels;
 
 public class ShiftCreate
 {
-	[Required]
+	[JsonRequired]
 	[Display(Name = "Shift start date and time")]
 	public DateTime StartTime { get; set; }
 
-	[Required]
+	[JsonRequired]
 	[Display(Name = "Shift end date and time")]
 	[DateGreaterThan("StartTime")]
 	public DateTime EndTime { get; set; }
