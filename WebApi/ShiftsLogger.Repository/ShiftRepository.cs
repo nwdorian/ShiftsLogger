@@ -23,7 +23,7 @@ public class ShiftRepository : IShiftRepository
 		try
 		{
 			var shifts = await _context.Shifts
-					.Where(s => s.IsActive == true)
+					.Where(s => s.IsActive)
 					.OrderBy(s => s.DateCreated)
 					.ProjectTo<Shift>(_mapper.ConfigurationProvider)
 					.ToListAsync();
@@ -54,7 +54,7 @@ public class ShiftRepository : IShiftRepository
 		try
 		{
 			var shift = await _context.Shifts
-					.Where(s => s.IsActive == true)
+					.Where(s => s.IsActive)
 					.ProjectTo<Shift>(_mapper.ConfigurationProvider)
 					.SingleOrDefaultAsync(s => s.Id == id);
 
@@ -163,8 +163,8 @@ public class ShiftRepository : IShiftRepository
 		try
 		{
 			var users = await _context.Shifts
-					.Where(s => s.IsActive == true && s.Id == id)
-					.SelectMany(s => s.Users.Where(u => u.IsActive == true))
+					.Where(s => s.IsActive && s.Id == id)
+					.SelectMany(s => s.Users.Where(u => u.IsActive))
 					.OrderBy(u => u.DateCreated)
 					.ProjectTo<User>(_mapper.ConfigurationProvider)
 					.ToListAsync();
@@ -195,8 +195,8 @@ public class ShiftRepository : IShiftRepository
 		try
 		{
 			var shiftEntity = await _context.Shifts
-					.Include(s => s.Users.Where(u => u.IsActive == true))
-					.Where(s => s.IsActive == true)
+					.Include(s => s.Users.Where(u => u.IsActive))
+					.Where(s => s.IsActive)
 					.SingleOrDefaultAsync(s => s.Id == id);
 
 			if (shiftEntity is null)

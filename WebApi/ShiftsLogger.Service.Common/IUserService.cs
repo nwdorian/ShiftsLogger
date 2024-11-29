@@ -8,6 +8,6 @@ public interface IUserService
 	Task<ApiResponse<User>> CreateAsync(User user);
 	Task<ApiResponse<User>> DeleteAsync(Guid id);
 	Task<ApiResponse<User>> UpdateAsync(Guid id, User user);
-	Task<ApiResponse<User>> UpdateShiftsAsync(Guid userId, List<Shift> shifts);
+	Task<ApiResponse<User>> UpdateShiftsAsync(Guid id, List<Shift> shifts);
 	Task<ApiResponse<List<Shift>>> GetShiftsByUserIdAsync(Guid id);
 }

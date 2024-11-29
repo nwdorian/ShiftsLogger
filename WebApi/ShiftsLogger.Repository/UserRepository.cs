@@ -24,7 +24,7 @@ public class UserRepository : IUserRepository
 		try
 		{
 			var users = await _context.Users
-					.Where(u => u.IsActive == true)
+					.Where(u => u.IsActive)
 					.OrderBy(u => u.DateCreated)
 					.ProjectTo<User>(_mapper.ConfigurationProvider)
 					.ToListAsync();
@@ -56,7 +56,7 @@ public class UserRepository : IUserRepository
 		try
 		{
 			var user = await _context.Users
-					.Where(u => u.IsActive == true)
+					.Where(u => u.IsActive)
 					.ProjectTo<User>(_mapper.ConfigurationProvider)
 					.SingleOrDefaultAsync(u => u.Id == id);
 
@@ -167,8 +167,8 @@ public class UserRepository : IUserRepository
 		try
 		{
 			var userEntity = await _context.Users
-					.Include(u => u.Shifts.Where(s => s.IsActive == true))
-					.Where(u => u.IsActive == true)
+					.Include(u => u.Shifts.Where(s => s.IsActive))
+					.Where(u => u.IsActive)
 					.SingleOrDefaultAsync(u => u.Id == id);
 
 			if (userEntity is null)
@@ -227,8 +227,8 @@ public class UserRepository : IUserRepository
 		try
 		{
 			var shifts = await _context.Users
-					.Where(u => u.IsActive == true && u.Id == id)
-					.SelectMany(u => u.Shifts.Where(s => s.IsActive == true))
+					.Where(u => u.IsActive && u.Id == id)
+					.SelectMany(u => u.Shifts.Where(s => s.IsActive))
 					.OrderBy(u => u.DateCreated)
 					.ProjectTo<Shift>(_mapper.ConfigurationProvider)
 					.ToListAsync();
