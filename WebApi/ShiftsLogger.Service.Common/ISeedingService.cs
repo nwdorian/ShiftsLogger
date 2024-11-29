@@ -3,5 +3,5 @@
 namespace ShiftsLogger.Service.Common;
 public interface ISeedingService
 {
-    Task<ApiResponse<string>> SeedDataAsync();
+	Task<ApiResponse<string>> SeedDataAsync();
 }

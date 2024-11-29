@@ -10,9 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
-    containerBuilder.RegisterInstance(builder.Configuration).As<IConfiguration>();
-    containerBuilder.RegisterAutoMapper(typeof(Program).Assembly);
-    containerBuilder.RegisterModule<RootModule>();
+	containerBuilder.RegisterInstance(builder.Configuration).As<IConfiguration>();
+	containerBuilder.RegisterAutoMapper(typeof(Program).Assembly);
+	containerBuilder.RegisterModule<RootModule>();
 });
 
 builder.Services.AddControllers();
@@ -25,8 +25,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

@@ -5,8 +5,8 @@ using ShiftsLogger.Model;
 namespace ShiftsLogger.Repository.Profiles;
 public class ShiftProfile : Profile
 {
-    public ShiftProfile()
-    {
-        CreateMap<ShiftEntity, Shift>().ReverseMap();
-    }
+	public ShiftProfile()
+	{
+		CreateMap<ShiftEntity, Shift>().ReverseMap();
+	}
 }

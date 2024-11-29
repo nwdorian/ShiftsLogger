@@ -8,11 +8,11 @@ using ShiftsLogger.Service;
 namespace ShiftsLogger.Root;
 public class RootModule : Module
 {
-    protected override void Load(ContainerBuilder builder)
-    {
-        builder.RegisterAutoMapper(typeof(UserProfile).Assembly);
-        builder.RegisterModule<ContextModule>();
-        builder.RegisterModule<RepositoryModule>();
-        builder.RegisterModule<ServiceModule>();
-    }
+	protected override void Load(ContainerBuilder builder)
+	{
+		builder.RegisterAutoMapper(typeof(UserProfile).Assembly);
+		builder.RegisterModule<ContextModule>();
+		builder.RegisterModule<RepositoryModule>();
+		builder.RegisterModule<ServiceModule>();
+	}
 }
