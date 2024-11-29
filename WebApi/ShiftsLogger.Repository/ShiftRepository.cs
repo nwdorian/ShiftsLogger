@@ -194,10 +194,10 @@ public class ShiftRepository : IShiftRepository
 
 		try
 		{
-			var shiftEntity = _context.Shifts
+			var shiftEntity = await _context.Shifts
 					.Include(s => s.Users.Where(u => u.IsActive == true))
 					.Where(s => s.IsActive == true)
-					.SingleOrDefault(s => s.Id == id);
+					.SingleOrDefaultAsync(s => s.Id == id);
 
 			if (shiftEntity is null)
 			{

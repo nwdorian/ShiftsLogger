@@ -166,10 +166,10 @@ public class UserRepository : IUserRepository
 		var response = new ApiResponse<User>();
 		try
 		{
-			var userEntity = _context.Users
+			var userEntity = await _context.Users
 					.Include(u => u.Shifts.Where(s => s.IsActive == true))
 					.Where(u => u.IsActive == true)
-					.SingleOrDefault(u => u.Id == id);
+					.SingleOrDefaultAsync(u => u.Id == id);
 
 			if (userEntity is null)
 			{
