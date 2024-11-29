@@ -35,7 +35,7 @@ public class ShiftService : IShiftService
 	{
 		var response = await _shiftRepository.GetByIdAsync(id);
 
-		if (response.Success == false || response.Data is null)
+		if (!response.Success || response.Data is null)
 		{
 			return response;
 		}
@@ -52,7 +52,7 @@ public class ShiftService : IShiftService
 	{
 		var response = await _shiftRepository.GetByIdAsync(id);
 
-		if (response.Success == false || response.Data is null)
+		if (!response.Success || response.Data is null)
 		{
 			return response;
 		}
@@ -77,7 +77,7 @@ public class ShiftService : IShiftService
 	public async Task<ApiResponse<Shift>> UpdateUsersAsync(Guid id, List<User> users)
 	{
 		var response = await _shiftRepository.GetByIdAsync(id);
-		if (response.Success == false)
+		if (!response.Success)
 		{
 			return response;
 		}
@@ -89,7 +89,7 @@ public class ShiftService : IShiftService
 	{
 		var response = new ApiResponse<List<User>>();
 		var getByIdResponse = await _shiftRepository.GetByIdAsync(id);
-		if (getByIdResponse.Success == false)
+		if (!getByIdResponse.Success)
 		{
 			response.Message = getByIdResponse.Message;
 			response.Success = false;
