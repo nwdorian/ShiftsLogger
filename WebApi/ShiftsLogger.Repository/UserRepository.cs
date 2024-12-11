@@ -193,8 +193,18 @@ public class UserRepository : IUserRepository
 					userEntity.Shifts.Remove(shift);
 				}
 			}
+
 			if (shiftsToAdd.Count != 0)
 			{
+				var shiftsOverlap = shiftsToAdd.Any(newShift => userEntity.Shifts.Any(existingShift => existingShift.StartTime < newShift.EndTime && existingShift.EndTime > newShift.StartTime));
+
+				if (shiftsOverlap)
+				{
+					response.Message = "Overlap with an already assigned shift!";
+					response.Success = false;
+					return response;
+				}
+
 				var shiftEntitiesToAdd = _mapper.Map<List<ShiftEntity>>(shiftsToAdd);
 				_context.Shifts.AttachRange(shiftEntitiesToAdd);
 				userEntity.Shifts.AddRange(shiftEntitiesToAdd);
