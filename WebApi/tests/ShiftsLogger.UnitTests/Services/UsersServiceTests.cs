@@ -612,6 +612,27 @@ public class UsersServiceTests
 	}
 
 	[Fact]
+	public async Task UpdateShifts_ReturnsUnsuccessfulResponse_WhenUserDoesNotExist()
+	{
+		var userId = Guid.NewGuid();
+		var getByIdResponse = new ApiResponse<User>
+		{
+			Success = false,
+			Message = $"User with Id {userId} doesn't exist"
+		};
+
+		_userRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(getByIdResponse);
+
+		var result = await _userService.UpdateShiftsAsync(userId, It.IsAny<List<Shift>>());
+
+		result.Should().NotBeNull();
+		result.Success.Should().BeFalse();
+		result.Message.Should().Be(getByIdResponse.Message);
+		_userRepositoryMock.Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+		_userRepositoryMock.Verify(repo => repo.UpdateShiftsAsync(It.IsAny<Guid>(), It.IsAny<List<Shift>>()), Times.Never);
+	}
+
+	[Fact]
 	public async Task UpdateShifts_ReturnsFailedResponse_WhenRepositoryThrowsException()
 	{
 		var exceptionMessage = "Database connection failed!";
