@@ -1,4 +1,4 @@
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
 using ShiftsLogger.Root;
@@ -35,4 +35,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

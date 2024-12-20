@@ -36,7 +36,7 @@ public class UserService : IUserService
 	{
 		var response = await _userRepository.GetByIdAsync(id);
 
-		if (response.Success == false || response.Data is null)
+		if (!response.Success || response.Data is null)
 		{
 			return response;
 		}
@@ -52,7 +52,7 @@ public class UserService : IUserService
 	{
 		var response = await _userRepository.GetByIdAsync(id);
 
-		if (response.Success == false || response.Data is null)
+		if (!response.Success || response.Data is null)
 		{
 			return response;
 		}
@@ -83,7 +83,7 @@ public class UserService : IUserService
 	{
 		var response = await _userRepository.GetByIdAsync(id);
 
-		if (response.Success == false || response.Data is null)
+		if (!response.Success || response.Data is null)
 		{
 			return response;
 		}
@@ -95,7 +95,7 @@ public class UserService : IUserService
 	{
 		var response = new ApiResponse<List<Shift>>();
 		var getByIdResponse = await _userRepository.GetByIdAsync(id);
-		if (getByIdResponse.Success == false)
+		if (!getByIdResponse.Success)
 		{
 			response.Message = getByIdResponse.Message;
 			response.Success = false;
