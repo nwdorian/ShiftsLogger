@@ -48,5 +48,5 @@ jobs:
           dotnet tool install --global coverlet.console
           dotnet build WebApi/WebApi.sln --no-incremental
           coverlet .\WebApi\tests\ShiftsLogger.UnitTests\bin\Debug\net9.0\ShiftsLogger.UnitTests.dll --target "dotnet" --targetargs "test WebApi/WebApi.sln --no-build"
-          coverlet .\WebApi\tests\ShiftsLogger.IntegrationTests\bin\Debug\net9.0\ShiftsLogger.UnitTests.dll --target "dotnet" --targetargs "test WebApi/WebApi.sln --no-build" --merge-with "coverage.json" -f=opencover -o="coverage.xml"
+          coverlet .\WebApi\ShiftsLogger.IntegrationTests\bin\Debug\net9.0\ShiftsLogger.IntegrationTests.dll --target "dotnet" --targetargs "test WebApi/WebApi.sln --no-build" --merge-with "coverage.json" -f=opencover -o="coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
