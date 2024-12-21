@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{970A2735
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiftsLogger.UnitTests", "tests\ShiftsLogger.UnitTests\ShiftsLogger.UnitTests.csproj", "{D290A8AF-F7D6-46D2-A6AC-5B16E64B9A00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiftsLogger.IntegrationTests", "ShiftsLogger.IntegrationTests\ShiftsLogger.IntegrationTests.csproj", "{13C2867B-16AE-4B7B-A262-0C7C911AD69E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,12 +77,17 @@ Global
 		{D290A8AF-F7D6-46D2-A6AC-5B16E64B9A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D290A8AF-F7D6-46D2-A6AC-5B16E64B9A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D290A8AF-F7D6-46D2-A6AC-5B16E64B9A00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13C2867B-16AE-4B7B-A262-0C7C911AD69E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13C2867B-16AE-4B7B-A262-0C7C911AD69E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13C2867B-16AE-4B7B-A262-0C7C911AD69E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13C2867B-16AE-4B7B-A262-0C7C911AD69E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D290A8AF-F7D6-46D2-A6AC-5B16E64B9A00} = {970A2735-99B2-4CCB-8840-FD36D36A5151}
+		{13C2867B-16AE-4B7B-A262-0C7C911AD69E} = {970A2735-99B2-4CCB-8840-FD36D36A5151}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {302D065F-116D-4EA8-8A2E-3020008A1475}
