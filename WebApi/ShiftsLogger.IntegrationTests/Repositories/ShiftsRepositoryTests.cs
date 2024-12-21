@@ -390,7 +390,7 @@ public class ShiftsRepositoryTests
 		result.Message.Should().Contain("Error in ShiftRepository");
 	}
 
-	private IMapper SetUpAutomapper()
+	private static IMapper SetUpAutomapper()
 	{
 		var config = new MapperConfiguration(cfg =>
 		{
@@ -400,7 +400,7 @@ public class ShiftsRepositoryTests
 		return mapper;
 	}
 
-	private async Task<ShiftsContext> GetDatabaseContext()
+	private static async Task<ShiftsContext> GetDatabaseContext()
 	{
 		var options = new DbContextOptionsBuilder<ShiftsContext>()
 			.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -408,7 +408,7 @@ public class ShiftsRepositoryTests
 
 		var dbContext = new ShiftsContext(options);
 		dbContext.Database.EnsureCreated();
-		if (await dbContext.Shifts.CountAsync() <= 0)
+		if (!await dbContext.Shifts.AnyAsync())
 		{
 			for (int i = 0; i < 10; i++)
 			{
@@ -438,7 +438,7 @@ public class ShiftsRepositoryTests
 		return dbContext;
 	}
 
-	private ShiftsContext GetDatabaseContextWithoutShifts()
+	private static ShiftsContext GetDatabaseContextWithoutShifts()
 	{
 		var options = new DbContextOptionsBuilder<ShiftsContext>()
 			.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())

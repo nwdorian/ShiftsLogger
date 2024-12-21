@@ -65,7 +65,7 @@ public class SeedingRepositoryTests
 		result.Message.Should().Contain("Error in SeedingRepository");
 	}
 
-	private IMapper SetUpAutomapper()
+	private static IMapper SetUpAutomapper()
 	{
 		var config = new MapperConfiguration(cfg =>
 		{
@@ -75,7 +75,7 @@ public class SeedingRepositoryTests
 		return mapper;
 	}
 
-	private async Task<ShiftsContext> GetDatabaseContext()
+	private static async Task<ShiftsContext> GetDatabaseContext()
 	{
 		var options = new DbContextOptionsBuilder<ShiftsContext>()
 			.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -83,7 +83,7 @@ public class SeedingRepositoryTests
 
 		var dbContext = new ShiftsContext(options);
 		dbContext.Database.EnsureCreated();
-		if (await dbContext.Users.CountAsync() <= 0)
+		if (!await dbContext.Users.AnyAsync())
 		{
 			for (int i = 0; i < 10; i++)
 			{
@@ -113,7 +113,7 @@ public class SeedingRepositoryTests
 		return dbContext;
 	}
 
-	private ShiftsContext GetDatabaseContextWithoutData()
+	private static ShiftsContext GetDatabaseContextWithoutData()
 	{
 		var options = new DbContextOptionsBuilder<ShiftsContext>()
 			.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
