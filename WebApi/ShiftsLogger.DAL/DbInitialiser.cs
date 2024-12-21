@@ -13,6 +13,5 @@ public class DbInitialiser
 	public async Task RunAsync()
 	{
 		await _context.Database.MigrateAsync();
-		return;
 	}
 }
