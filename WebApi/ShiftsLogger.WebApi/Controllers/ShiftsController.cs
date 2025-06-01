@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Model;
 using ShiftsLogger.Service.Common;
@@ -19,6 +20,9 @@ public class ShiftsController : ControllerBase
 		_mapper = mapper;
 	}
 
+	[EndpointDescription("Retrieves all shifts from the database.")]
+	[ProducesResponseType<List<ShiftRead>>(StatusCodes.Status200OK, "application/json")]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpGet]
 	public async Task<IActionResult> GetAll()
 	{
@@ -33,8 +37,11 @@ public class ShiftsController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Retrieves a single shift from the database by Id.")]
+	[ProducesResponseType<ShiftRead>(StatusCodes.Status200OK, "application/json")]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpGet("{id}")]
-	public async Task<IActionResult> GetById(Guid id)
+	public async Task<IActionResult> GetById([Description("Id of the shift.")] Guid id)
 	{
 		var response = await _shiftService.GetByIdAsync(id);
 
@@ -47,8 +54,11 @@ public class ShiftsController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Creates a new shift.")]
+	[ProducesResponseType(StatusCodes.Status201Created)]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpPost]
-	public async Task<IActionResult> Create(ShiftCreate shiftCreate)
+	public async Task<IActionResult> Create([Description("Shift to create.")] ShiftCreate shiftCreate)
 	{
 		var shift = _mapper.Map<Shift>(shiftCreate);
 
@@ -63,8 +73,11 @@ public class ShiftsController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Deletes an existing shift.")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpDelete("{id}")]
-	public async Task<IActionResult> Delete(Guid id)
+	public async Task<IActionResult> Delete([Description("Id of the shift.")] Guid id)
 	{
 		var response = await _shiftService.DeleteAsync(id);
 
@@ -76,8 +89,11 @@ public class ShiftsController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Updates an existing shift.")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpPut("{id}")]
-	public async Task<IActionResult> Update(Guid id, ShiftUpdate shiftUpdate)
+	public async Task<IActionResult> Update([Description("Id of the shift.")] Guid id, [Description("Shift to update.")] ShiftUpdate shiftUpdate)
 	{
 		var shift = _mapper.Map<Shift>(shiftUpdate);
 
@@ -91,8 +107,11 @@ public class ShiftsController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Updates users assigned to a shift.")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpPut("{id}/users")]
-	public async Task<IActionResult> UpdateUsers(Guid id, List<UserRead> usersRead)
+	public async Task<IActionResult> UpdateUsers([Description("Id of the shift.")] Guid id, [Description("A list of users that will be assigned to the shift after update.")] List<UserRead> usersRead)
 	{
 		var users = _mapper.Map<List<User>>(usersRead);
 
@@ -106,8 +125,11 @@ public class ShiftsController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Retrieves users assigned to a shift.")]
+	[ProducesResponseType<List<UserRead>>(StatusCodes.Status200OK, "application/json")]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpGet("{id}/users")]
-	public async Task<IActionResult> GetUsers(Guid id)
+	public async Task<IActionResult> GetUsers([Description("Id of the shift.")] Guid id)
 	{
 		var response = await _shiftService.GetUsersByShiftIdAsync(id);
 
