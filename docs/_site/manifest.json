@@ -54,6 +54,29 @@
       "version": ""
     },
     {
+      "type": "RestApi",
+      "source_relative_path": "restapi/shifts-logger-open-api.swagger.json",
+      "output": {
+        ".html": {
+          "relative_path": "restapi/shifts-logger-open-api.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "restapi/toc.md",
+      "output": {
+        ".html": {
+          "relative_path": "restapi/toc.html"
+        },
+        ".json": {
+          "relative_path": "restapi/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "toc.yml",
       "output": {

@@ -17,7 +17,14 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(o =>
+{
+	o.AddOperationTransformer((operation, context, cancellationToken) =>
+	{
+		operation.OperationId = $"{context.Description.ActionDescriptor.RouteValues.Values.First()}";
+		return Task.CompletedTask;
+	});
+});
 
 var app = builder.Build();
 
