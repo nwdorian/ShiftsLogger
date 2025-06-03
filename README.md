@@ -37,6 +37,7 @@ The backend is a .NET Web API that provides endpoints for managing database reco
     - [5. Enable Github pages](#5-enable-github-pages)
     - [6. Add workflow file](#6-add-workflow-file)
 - [Contributing](#contributing)
+- [License](#license)
 - [Contact](#contact)
 
 ## Features
@@ -134,7 +135,7 @@ The backend is a .NET Web API that provides endpoints for managing database reco
 ### Dependency Injection
 
 - Autofac modules are used for registering layer components
-- Data Access, Repository and Service layer each contain a module where classes are registered to the Autofac IoC container trough their interfaces
+- Data Access, Repository and Service layer each contain a module where classes are registered to the Autofac IoC container through their interfaces
 - *ShiftsLogger.Root* project acts as a thin layer that composes modules. It serves as the composition root, handling the registration of all modules without exposing the implementation details to the WebApi project.
 
 ### Model types
@@ -153,7 +154,7 @@ The backend is a .NET Web API that provides endpoints for managing database reco
 
 ## Code Quality Analysis
 
-- Code quality analysis is done trough [SonarQube Cloud](https://sonarcloud.io/)
+- Code quality analysis is done through [SonarQube Cloud](https://sonarcloud.io/)
 - It analyses the codebase for best practices along with reliability, security and maintainability issues
 - Paired with coverlet.collector NuGet package we get a Test Coverage percentage which has to be >80%
 
@@ -222,7 +223,7 @@ jobs:
 ## REST API documentation
 
 - Available at
-- REST API Endpoints documentation is automatically generated based on the OpenAPI spec - Static site is created with DocFx and deployed to Github Pages trough Github Actions
+- REST API Endpoints documentation is automatically generated based on the OpenAPI spec - Static site is created with DocFx and deployed to Github Pages through Github Actions
 
 ### How to integrate DocFx with Github Pages
 
@@ -352,6 +353,10 @@ jobs:
 ## Contributing
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
 ## Contact
 
