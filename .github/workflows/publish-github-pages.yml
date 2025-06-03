@@ -26,10 +26,10 @@ jobs:
             9.0.x
 
       - name: Restore Dependencies
-        run: dotnet restore
+        run: dotnet restore WebApi/WebApi.sln
 
       - name: Build Solution (Generates OpenAPI JSON)
-        run: dotnet build
+        run: dotnet build WebApi/WebApi.sln
 
       - name: Install DocFxOpenApi Tool
         run: dotnet tool install --global DocFxOpenApi --version 1.32.0
