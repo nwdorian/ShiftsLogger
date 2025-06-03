@@ -234,8 +234,8 @@ jobs:
 
 ```git
 # DocFx generated files
-/docs/**/toc.yml
-/docs/reference/
+docs/**/toc.yml
+docs/reference/
 _site
 _pdf
 ```

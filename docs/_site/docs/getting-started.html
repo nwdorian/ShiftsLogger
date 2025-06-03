@@ -7,7 +7,7 @@
       <meta name="title" content="Getting Started | Shifts Logger ">
       
       
-      <link rel="icon" href="../favicon.ico">
+      <link rel="icon" href="../images/favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
       <meta name="docfx:navrel" content="../toc.html">
@@ -44,7 +44,7 @@
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="Shifts Logger">
+            <img id="logo" class="svg" src="../images/shifts_logger_logo.png" alt="Shifts Logger">
             Shifts Logger
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,6 +87,66 @@
         <article data-uid="">
 <h1 id="getting-started">Getting Started</h1>
 
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <code>InitialCreate</code> migration was created.</p>
+<p>It will be applied on startup of the API application and create the database and tables.</p>
+</div>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>.NET 9 SDK</li>
+<li>A code editor like Visual Studio or Visual Studio Code</li>
+<li>SQL Server</li>
+<li>SQL Server Management Studio (optional)</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<ol>
+<li>Clone the repository
+<ul>
+<li><code>https://github.com/nwdorian/ShiftsLogger.git</code></li>
+</ul>
+</li>
+<li>Configure the appsettings.json
+<ul>
+<li>Update the connection string</li>
+</ul>
+</li>
+<li>Navigate to the API project folder
+<ul>
+<li><code>cd .\WebApi</code></li>
+</ul>
+</li>
+<li>Build the Web API application using .NET CLI
+<ul>
+<li><code>dotnet build</code></li>
+</ul>
+</li>
+<li>Navigate to the Console project folder
+<ul>
+<li><code>cd .\ConsoleUI</code></li>
+</ul>
+</li>
+<li>Build the Console application using the .NET CLI
+<ul>
+<li><code>dotnet build</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="running-the-application">Running the application</h2>
+<ol>
+<li>Run the API application from the API project folder using the .NET CLI
+<ul>
+<li><code>cd .\WebApi\ShiftsLogger.WebApi</code></li>
+<li><code>dotnet run</code></li>
+</ul>
+</li>
+<li>Run the Console application from the Console project folder using the .NET CLI
+<ul>
+<li><code>cd .\ConsoleUI\ShiftsLogger.ConsoleUI</code></li>
+<li><code>dotnet run</code></li>
+</ul>
+</li>
+</ol>
 
 </article>
 

@@ -27,6 +27,8 @@
     "globalMetadata": {
       "_appName": "Shifts Logger",
       "_appTitle": "Shifts Logger",
+      "_appLogoPath": "images/shifts_logger_logo.png",
+      "_appFaviconPath": "images/favicon.ico",
       "_enableSearch": true,
       "pdf": true
     }

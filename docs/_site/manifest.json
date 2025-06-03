@@ -12,6 +12,46 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/code-quality-analysis.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/code-quality-analysis.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/contact.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/contact.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/contributing.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/contributing.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/database-schema.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/database-schema.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docs/getting-started.md",
       "output": {
         ".html": {
@@ -31,6 +71,16 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "docs/rest-api-documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/rest-api-documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "docs/toc.yml",
       "output": {
@@ -39,6 +89,46 @@
         },
         ".json": {
           "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/webapi-project-structure.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/webapi-project-structure.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/entity_relationship_diagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/entity_relationship_diagram.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/shifts_logger_logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/shifts_logger_logo.png"
         }
       },
       "version": ""
