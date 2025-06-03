@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Model;
 using ShiftsLogger.Service.Common;
@@ -19,6 +20,9 @@ public class UsersController : ControllerBase
 		_mapper = mapper;
 	}
 
+	[EndpointDescription("Retrieves all users from the database.")]
+	[ProducesResponseType<List<UserRead>>(StatusCodes.Status200OK, "application/json")]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpGet]
 	public async Task<IActionResult> GetAll()
 	{
@@ -33,8 +37,11 @@ public class UsersController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Retrieves a single user from the database by Id.")]
+	[ProducesResponseType<UserRead>(StatusCodes.Status200OK, "application/json")]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpGet("{id}")]
-	public async Task<IActionResult> GetById(Guid id)
+	public async Task<IActionResult> GetById([Description("Id of the user.")] Guid id)
 	{
 		var response = await _userService.GetByIdAsync(id);
 
@@ -47,8 +54,11 @@ public class UsersController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Creates a new user.")]
+	[ProducesResponseType(StatusCodes.Status201Created)]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpPost]
-	public async Task<IActionResult> Create(UserCreate userCreate)
+	public async Task<IActionResult> Create([Description("User to create.")] UserCreate userCreate)
 	{
 		var user = _mapper.Map<User>(userCreate);
 
@@ -63,8 +73,11 @@ public class UsersController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Deletes an existing user.")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpDelete("{id}")]
-	public async Task<IActionResult> Delete(Guid id)
+	public async Task<IActionResult> Delete([Description("Id of the user.")] Guid id)
 	{
 		var response = await _userService.DeleteAsync(id);
 
@@ -76,8 +89,11 @@ public class UsersController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Updates an existing user.")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpPut("{id}")]
-	public async Task<IActionResult> Update(Guid id, UserUpdate userUpdate)
+	public async Task<IActionResult> Update([Description("Id of the user.")] Guid id, [Description("User to update.")] UserUpdate userUpdate)
 	{
 		var user = _mapper.Map<User>(userUpdate);
 
@@ -91,8 +107,11 @@ public class UsersController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Updates shifts assigned to a user.")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpPut("{id}/shifts")]
-	public async Task<IActionResult> UpdateShifts(Guid id, List<ShiftRead> shiftsRead)
+	public async Task<IActionResult> UpdateShifts([Description("Id of the user.")] Guid id, [Description("A list of shifts that will be assigned to the user after update.")] List<ShiftRead> shiftsRead)
 	{
 		var shifts = _mapper.Map<List<Shift>>(shiftsRead);
 
@@ -106,8 +125,11 @@ public class UsersController : ControllerBase
 		return BadRequest(response.Message);
 	}
 
+	[EndpointDescription("Retrieves shifts assigned to a user.")]
+	[ProducesResponseType<List<ShiftRead>>(StatusCodes.Status200OK, "application/json")]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpGet("{id}/shifts")]
-	public async Task<IActionResult> GetShifts(Guid id)
+	public async Task<IActionResult> GetShifts([Description("Id of the user.")] Guid id)
 	{
 		var response = await _userService.GetShiftsByUserIdAsync(id);
 

@@ -1,0 +1,45 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: ShiftsLogger.WebApi | v1/1.0.0
+  name: ShiftsLogger.WebApi | v1
+  href: restapi/shifts-logger-open-api.html
+- uid: ShiftsLogger.WebApi | v1/1.0.0/Create
+  name: Create
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_Create
+- uid: ShiftsLogger.WebApi | v1/1.0.0/Delete
+  name: Delete
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_Delete
+- uid: ShiftsLogger.WebApi | v1/1.0.0/GetAll
+  name: GetAll
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_GetAll
+- uid: ShiftsLogger.WebApi | v1/1.0.0/GetById
+  name: GetById
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_GetById
+- uid: ShiftsLogger.WebApi | v1/1.0.0/GetShifts
+  name: GetShifts
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_GetShifts
+- uid: ShiftsLogger.WebApi | v1/1.0.0/GetUsers
+  name: GetUsers
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_GetUsers
+- uid: ShiftsLogger.WebApi | v1/1.0.0/SeedData
+  name: SeedData
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_SeedData
+- uid: ShiftsLogger.WebApi | v1/1.0.0/Update
+  name: Update
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_Update
+- uid: ShiftsLogger.WebApi | v1/1.0.0/UpdateShifts
+  name: UpdateShifts
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_UpdateShifts
+- uid: ShiftsLogger.WebApi | v1/1.0.0/UpdateUsers
+  name: UpdateUsers
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_UpdateUsers
+- uid: ShiftsLogger.WebApi | v1/1.0.0/tag/Seeding
+  name: Seeding
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_tag_Seeding
+- uid: ShiftsLogger.WebApi | v1/1.0.0/tag/Shifts
+  name: Shifts
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_tag_Shifts
+- uid: ShiftsLogger.WebApi | v1/1.0.0/tag/Users
+  name: Users
+  href: restapi/shifts-logger-open-api.html#ShiftsLogger_WebApi___v1_1_0_0_tag_Users

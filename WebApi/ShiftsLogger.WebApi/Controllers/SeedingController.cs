@@ -12,6 +12,10 @@ public class SeedingController : ControllerBase
 	{
 		_seedingService = seedingService;
 	}
+
+	[EndpointDescription("Seeds database with preset data for demonstration purposes.")]
+	[ProducesResponseType<string>(StatusCodes.Status200OK, "text/plain")]
+	[ProducesResponseType<string>(StatusCodes.Status400BadRequest, "text/plain")]
 	[HttpPost]
 	public async Task<ActionResult> SeedData()
 	{

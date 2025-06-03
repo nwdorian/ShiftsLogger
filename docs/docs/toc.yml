@@ -1,0 +1,16 @@
+- name: Getting Started
+  href: getting-started.md
+- name: Database Schema
+  href: database-schema.md
+- name: WebAPI Project Structure
+  href: webapi-project-structure.md
+- name: Code Quality Analysis
+  href: code-quality-analysis.md
+- name: REST API documentation
+  href: rest-api-documentation.md
+- name: Contributing
+  href: contributing.md
+- name: License
+  href: license.md
+- name: Contact
+  href: contact.md
