@@ -11,7 +11,7 @@
   - [Microsoft.AspNetCore.OpenApi](https://www.nuget.org/packages/Microsoft.AspNetCore.OpenApi/) and [Microsoft.Extensions.ApiDescription.Server](https://www.nuget.org/packages/Microsoft.Extensions.ApiDescription.Server/) NuGet packages for generating OpenAPI documents at build-time
   - Update .gitignore by adding:
 
-```git
+```md
 # DocFx generated files
 docs/**/toc.yml
 docs/reference/
