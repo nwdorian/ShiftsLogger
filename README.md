@@ -13,6 +13,8 @@ This is a .NET application for tracking employee working hours. It allows users 
 
 The backend is a .NET Web API that provides endpoints for managing database records. Frontend is a .NET Console Application for user interaction.
 
+Documentation also available on [Github Pages](https://nwdorian.github.io/ShiftsLogger/index.html)
+
 ## Table of Contents
 
 - [Features](#features)
@@ -222,7 +224,7 @@ jobs:
 
 ## REST API documentation
 
-- Available at
+- Available on [Github Pages](https://nwdorian.github.io/ShiftsLogger/restapi/shifts-logger-open-api.html)
 - REST API Endpoints documentation is automatically generated based on the OpenAPI spec - Static site is created with DocFx and deployed to Github Pages through Github Actions
 
 ### How to integrate DocFx with Github Pages
