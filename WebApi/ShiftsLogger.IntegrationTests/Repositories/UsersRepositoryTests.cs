@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using ShiftsLogger.DAL;
 using ShiftsLogger.DAL.Entities;
 using ShiftsLogger.Repository;
 
 namespace ShiftsLogger.IntegrationTests.Repositories;
+
 public class UsersRepositoryTests
 {
 	[Fact]
@@ -116,7 +118,7 @@ public class UsersRepositoryTests
 			Email = "jdoe@gmail.com",
 			IsActive = true,
 			DateCreated = DateTime.Now,
-			DateUpdated = DateTime.Now
+			DateUpdated = DateTime.Now,
 		};
 
 		var result = await userRepository.CreateAsync(user);
@@ -217,25 +219,29 @@ public class UsersRepositoryTests
 		var dbContext = await GetDatabaseContext();
 		var mapper = SetUpAutomapper();
 		var userRepository = new UserRepository(dbContext, mapper);
-		var users = new List<User> {
-		new User {
-			Id = Guid.NewGuid(),
-			FirstName = "John",
-			LastName = "Doe",
-			Email = "jdoe@gmail.com",
-			IsActive = true,
-			DateCreated = DateTime.Now,
-			DateUpdated = DateTime.Now
-		},
-		new User{
-			Id = Guid.NewGuid(),
-			FirstName = "John",
-			LastName = "Doe",
-			Email = "jdoe@gmail.com",
-			IsActive = true,
-			DateCreated = DateTime.Now,
-			DateUpdated = DateTime.Now
-		}};
+		var users = new List<User>
+		{
+			new User
+			{
+				Id = Guid.NewGuid(),
+				FirstName = "John",
+				LastName = "Doe",
+				Email = "jdoe@gmail.com",
+				IsActive = true,
+				DateCreated = DateTime.Now,
+				DateUpdated = DateTime.Now,
+			},
+			new User
+			{
+				Id = Guid.NewGuid(),
+				FirstName = "John",
+				LastName = "Doe",
+				Email = "jdoe@gmail.com",
+				IsActive = true,
+				DateCreated = DateTime.Now,
+				DateUpdated = DateTime.Now,
+			},
+		};
 
 		var result = await userRepository.CreateManyAsync(users);
 
@@ -268,13 +274,15 @@ public class UsersRepositoryTests
 		var mapper = SetUpAutomapper();
 		var userRepository = new UserRepository(dbContext, mapper);
 		var userId = dbContext.Users.First().Id;
-		var shiftsList = new List<Shift> {
+		var shiftsList = new List<Shift>
+		{
 			new Shift
 			{
-			Id = Guid.NewGuid(),
-			StartTime = DateTime.Now,
-			EndTime = DateTime.Now.AddHours(10),
-			}};
+				Id = Guid.NewGuid(),
+				StartTime = DateTime.Now,
+				EndTime = DateTime.Now.AddHours(10),
+			},
+		};
 
 		var result = await userRepository.UpdateShiftsAsync(userId, shiftsList);
 
@@ -305,7 +313,10 @@ public class UsersRepositoryTests
 		var mapper = SetUpAutomapper();
 		var userRepository = new UserRepository(dbContext, mapper);
 		var userId = dbContext.Users.First().Id;
-		var shiftEntities = dbContext.Users.Where(u => u.Id == userId).SelectMany(u => u.Shifts).ToList();
+		var shiftEntities = dbContext
+			.Users.Where(u => u.Id == userId)
+			.SelectMany(u => u.Shifts)
+			.ToList();
 		var shifts = mapper.Map<List<Shift>>(shiftEntities);
 
 		var result = await userRepository.UpdateShiftsAsync(userId, shifts);
@@ -322,15 +333,20 @@ public class UsersRepositoryTests
 		var mapper = SetUpAutomapper();
 		var userRepository = new UserRepository(dbContext, mapper);
 		var userId = dbContext.Users.First().Id;
-		var shiftEntities = dbContext.Users.Where(u => u.Id == userId).SelectMany(u => u.Shifts).ToList();
+		var shiftEntities = dbContext
+			.Users.Where(u => u.Id == userId)
+			.SelectMany(u => u.Shifts)
+			.ToList();
 		var shifts = mapper.Map<List<Shift>>(shiftEntities);
-		var shiftsList = new List<Shift> {
+		var shiftsList = new List<Shift>
+		{
 			new Shift
 			{
-			Id = Guid.NewGuid(),
-			StartTime = DateTime.Now,
-			EndTime = DateTime.Now.AddHours(10),
-			}};
+				Id = Guid.NewGuid(),
+				StartTime = DateTime.Now,
+				EndTime = DateTime.Now.AddHours(10),
+			},
+		};
 		shiftsList.AddRange(shifts);
 
 		var result = await userRepository.UpdateShiftsAsync(userId, shiftsList);
@@ -409,10 +425,13 @@ public class UsersRepositoryTests
 
 	private static IMapper SetUpAutomapper()
 	{
-		var config = new MapperConfiguration(cfg =>
-		{
-			cfg.AddProfile(new RepositoryProfile());
-		});
+		var config = new MapperConfiguration(
+			cfg =>
+			{
+				cfg.AddProfile(new RepositoryProfile());
+			},
+			NullLoggerFactory.Instance
+		);
 		var mapper = config.CreateMapper();
 		return mapper;
 	}
@@ -437,17 +456,19 @@ public class UsersRepositoryTests
 					Email = "jdoe@gmail.com",
 					IsActive = true,
 					DateCreated = DateTime.Now,
-					DateUpdated = DateTime.Now
+					DateUpdated = DateTime.Now,
 				};
-				user.Shifts.Add(new ShiftEntity
-				{
-					Id = Guid.NewGuid(),
-					StartTime = DateTime.Now,
-					EndTime = DateTime.Now.AddHours(8),
-					IsActive = true,
-					DateCreated = DateTime.Now,
-					DateUpdated = DateTime.Now
-				});
+				user.Shifts.Add(
+					new ShiftEntity
+					{
+						Id = Guid.NewGuid(),
+						StartTime = DateTime.Now,
+						EndTime = DateTime.Now.AddHours(8),
+						IsActive = true,
+						DateCreated = DateTime.Now,
+						DateUpdated = DateTime.Now,
+					}
+				);
 				dbContext.Add(user);
 			}
 			await dbContext.SaveChangesAsync();
