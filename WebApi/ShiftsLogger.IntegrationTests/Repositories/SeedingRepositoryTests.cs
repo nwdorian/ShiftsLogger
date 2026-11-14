@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using ShiftsLogger.DAL;
 using ShiftsLogger.DAL.Entities;
 using ShiftsLogger.Repository;
 
 namespace ShiftsLogger.IntegrationTests.Repositories;
+
 public class SeedingRepositoryTests
 {
 	[Fact]
@@ -67,10 +69,13 @@ public class SeedingRepositoryTests
 
 	private static IMapper SetUpAutomapper()
 	{
-		var config = new MapperConfiguration(cfg =>
-		{
-			cfg.AddProfile(new RepositoryProfile());
-		});
+		var config = new MapperConfiguration(
+			cfg =>
+			{
+				cfg.AddProfile(new RepositoryProfile());
+			},
+			NullLoggerFactory.Instance
+		);
 		var mapper = config.CreateMapper();
 		return mapper;
 	}
@@ -95,17 +100,19 @@ public class SeedingRepositoryTests
 					Email = "jdoe@gmail.com",
 					IsActive = true,
 					DateCreated = DateTime.Now,
-					DateUpdated = DateTime.Now
+					DateUpdated = DateTime.Now,
 				};
-				user.Shifts.Add(new ShiftEntity
-				{
-					Id = Guid.NewGuid(),
-					StartTime = DateTime.Now,
-					EndTime = DateTime.Now.AddHours(8),
-					IsActive = true,
-					DateCreated = DateTime.Now,
-					DateUpdated = DateTime.Now
-				});
+				user.Shifts.Add(
+					new ShiftEntity
+					{
+						Id = Guid.NewGuid(),
+						StartTime = DateTime.Now,
+						EndTime = DateTime.Now.AddHours(8),
+						IsActive = true,
+						DateCreated = DateTime.Now,
+						DateUpdated = DateTime.Now,
+					}
+				);
 				dbContext.Add(user);
 			}
 			await dbContext.SaveChangesAsync();

@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 using ShiftsLogger.Service.Common;
 using ShiftsLogger.WebApi.Controllers;
 using ShiftsLogger.WebApi.RestModels;
 
 namespace ShiftsLogger.UnitTests.Controllers;
+
 public class ShiftsControllerTests
 {
 	private readonly ShiftsController _shiftsController;
 	private readonly Mock<IShiftService> _shiftsServiceMock;
 	private readonly IMapper _mapper;
+
 	public ShiftsControllerTests()
 	{
 		_shiftsServiceMock = new Mock<IShiftService>();
@@ -21,20 +24,19 @@ public class ShiftsControllerTests
 	public async Task GetAll_ReturnsOkWithListOfShifts_WhenDataExists()
 	{
 		var shifts = GetShifts();
-		var getAllResponse = new ApiResponse<List<Shift>>
-		{
-			Data = shifts,
-			Success = true
-		};
-		_shiftsServiceMock.Setup(s => s.GetAllAsync())
-			.ReturnsAsync(getAllResponse);
+		var getAllResponse = new ApiResponse<List<Shift>> { Data = shifts, Success = true };
+		_shiftsServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(getAllResponse);
 
 		var result = await _shiftsController.GetAll();
 
 		result.Should().NotBeNull();
 		result.Should().BeOfType<OkObjectResult>();
-		result.As<OkObjectResult>().Value.Should().BeOfType<List<ShiftRead>>()
-			.Which.Should().HaveCount(2);
+		result
+			.As<OkObjectResult>()
+			.Value.Should()
+			.BeOfType<List<ShiftRead>>()
+			.Which.Should()
+			.HaveCount(2);
 		_shiftsServiceMock.Verify(s => s.GetAllAsync(), Times.Once);
 	}
 
@@ -45,16 +47,18 @@ public class ShiftsControllerTests
 		{
 			Data = null,
 			Success = false,
-			Message = "No shifts found!"
+			Message = "No shifts found!",
 		};
-		_shiftsServiceMock.Setup(s => s.GetAllAsync())
-			.ReturnsAsync(getAllResponse);
+		_shiftsServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(getAllResponse);
 
 		var result = await _shiftsController.GetAll();
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.Value.Should().Be(getAllResponse.Message);
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.Value.Should()
+			.Be(getAllResponse.Message);
 		_shiftsServiceMock.Verify(s => s.GetAllAsync(), Times.Once);
 	}
 
@@ -62,19 +66,13 @@ public class ShiftsControllerTests
 	public async Task GetById_ReturnsOkWithShift_WhenShiftExists()
 	{
 		var shift = GetShifts().First();
-		var getByIdResponse = new ApiResponse<Shift>
-		{
-			Data = shift,
-			Success = true
-		};
-		_shiftsServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<Guid>()))
-			.ReturnsAsync(getByIdResponse);
+		var getByIdResponse = new ApiResponse<Shift> { Data = shift, Success = true };
+		_shiftsServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(getByIdResponse);
 
 		var result = await _shiftsController.GetById(shift.Id);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<OkObjectResult>()
-			.Which.Value.Should().BeOfType<ShiftRead>();
+		result.Should().BeOfType<OkObjectResult>().Which.Value.Should().BeOfType<ShiftRead>();
 		_shiftsServiceMock.Verify(s => s.GetByIdAsync(shift.Id), Times.Once);
 	}
 
@@ -86,16 +84,18 @@ public class ShiftsControllerTests
 		{
 			Data = null,
 			Success = false,
-			Message = "Shift not found"
+			Message = "Shift not found",
 		};
-		_shiftsServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<Guid>()))
-			.ReturnsAsync(getByIdResponse);
+		_shiftsServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(getByIdResponse);
 
 		var result = await _shiftsController.GetById(shiftId);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.Value.Should().Be(getByIdResponse.Message);
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.Value.Should()
+			.Be(getByIdResponse.Message);
 		_shiftsServiceMock.Verify(s => s.GetByIdAsync(shiftId), Times.Once);
 	}
 
@@ -108,19 +108,13 @@ public class ShiftsControllerTests
 			EndTime = DateTime.Now.AddHours(10),
 		};
 		var shift = _mapper.Map<Shift>(shiftCreate);
-		var createResponse = new ApiResponse<Shift>
-		{
-			Data = shift,
-			Success = true,
-		};
-		_shiftsServiceMock.Setup(s => s.CreateAsync(It.IsAny<Shift>()))
-			.ReturnsAsync(createResponse);
+		var createResponse = new ApiResponse<Shift> { Data = shift, Success = true };
+		_shiftsServiceMock.Setup(s => s.CreateAsync(It.IsAny<Shift>())).ReturnsAsync(createResponse);
 
 		var result = await _shiftsController.Create(shiftCreate);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<CreatedAtActionResult>()
-			.Which.Value.Should().BeOfType<ShiftRead>();
+		result.Should().BeOfType<CreatedAtActionResult>().Which.Value.Should().BeOfType<ShiftRead>();
 		_shiftsServiceMock.Verify(s => s.CreateAsync(It.IsAny<Shift>()), Times.Once);
 	}
 
@@ -130,22 +124,24 @@ public class ShiftsControllerTests
 		var shiftCreate = new ShiftCreate
 		{
 			StartTime = DateTime.Now.AddHours(2),
-			EndTime = DateTime.Now.AddHours(10)
+			EndTime = DateTime.Now.AddHours(10),
 		};
 		var shift = _mapper.Map<Shift>(shiftCreate);
 		var createResponse = new ApiResponse<Shift>
 		{
 			Success = false,
-			Message = "Error in ShiftsRepository"
+			Message = "Error in ShiftsRepository",
 		};
-		_shiftsServiceMock.Setup(s => s.CreateAsync(It.IsAny<Shift>()))
-			.ReturnsAsync(createResponse);
+		_shiftsServiceMock.Setup(s => s.CreateAsync(It.IsAny<Shift>())).ReturnsAsync(createResponse);
 
 		var result = await _shiftsController.Create(shiftCreate);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.Value.Should().Be(createResponse.Message);
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.Value.Should()
+			.Be(createResponse.Message);
 		_shiftsServiceMock.Verify(s => s.CreateAsync(It.IsAny<Shift>()), Times.Once);
 	}
 
@@ -153,13 +149,8 @@ public class ShiftsControllerTests
 	public async Task Delete_ReturnsNoContent_WhenShiftIsDeleted()
 	{
 		var shiftId = Guid.NewGuid();
-		var deleteResponse = new ApiResponse<Shift>
-		{
-			Success = true,
-			Message = "Deleted"
-		};
-		_shiftsServiceMock.Setup(s => s.DeleteAsync(It.IsAny<Guid>()))
-			.ReturnsAsync(deleteResponse);
+		var deleteResponse = new ApiResponse<Shift> { Success = true, Message = "Deleted" };
+		_shiftsServiceMock.Setup(s => s.DeleteAsync(It.IsAny<Guid>())).ReturnsAsync(deleteResponse);
 
 		var result = await _shiftsController.Delete(shiftId);
 
@@ -175,16 +166,18 @@ public class ShiftsControllerTests
 		var deleteResponse = new ApiResponse<Shift>
 		{
 			Success = false,
-			Message = "Error in ShiftsRepository"
+			Message = "Error in ShiftsRepository",
 		};
-		_shiftsServiceMock.Setup(s => s.DeleteAsync(It.IsAny<Guid>()))
-			.ReturnsAsync(deleteResponse);
+		_shiftsServiceMock.Setup(s => s.DeleteAsync(It.IsAny<Guid>())).ReturnsAsync(deleteResponse);
 
 		var result = await _shiftsController.Delete(shiftId);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.Value.Should().Be(deleteResponse.Message);
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.Value.Should()
+			.Be(deleteResponse.Message);
 		_shiftsServiceMock.Verify(s => s.DeleteAsync(shiftId), Times.Once);
 	}
 
@@ -195,14 +188,11 @@ public class ShiftsControllerTests
 		var shiftUpdate = new ShiftUpdate
 		{
 			StartTime = DateTime.Now.AddHours(2),
-			EndTime = DateTime.Now.AddHours(10)
+			EndTime = DateTime.Now.AddHours(10),
 		};
-		var updateResponse = new ApiResponse<Shift>
-		{
-			Success = true,
-			Message = "Updated"
-		};
-		_shiftsServiceMock.Setup(s => s.UpdateAsync(shiftId, It.IsAny<Shift>()))
+		var updateResponse = new ApiResponse<Shift> { Success = true, Message = "Updated" };
+		_shiftsServiceMock
+			.Setup(s => s.UpdateAsync(shiftId, It.IsAny<Shift>()))
 			.ReturnsAsync(updateResponse);
 
 		var result = await _shiftsController.Update(shiftId, shiftUpdate);
@@ -219,21 +209,25 @@ public class ShiftsControllerTests
 		var shiftUpdate = new ShiftUpdate
 		{
 			StartTime = DateTime.Now.AddHours(2),
-			EndTime = DateTime.Now.AddHours(10)
+			EndTime = DateTime.Now.AddHours(10),
 		};
 		var updateResponse = new ApiResponse<Shift>
 		{
 			Success = false,
-			Message = "Error in ShiftsRepository"
+			Message = "Error in ShiftsRepository",
 		};
-		_shiftsServiceMock.Setup(s => s.UpdateAsync(shiftId, It.IsAny<Shift>()))
+		_shiftsServiceMock
+			.Setup(s => s.UpdateAsync(shiftId, It.IsAny<Shift>()))
 			.ReturnsAsync(updateResponse);
 
 		var result = await _shiftsController.Update(shiftId, shiftUpdate);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.Value.Should().Be(updateResponse.Message);
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.Value.Should()
+			.Be(updateResponse.Message);
 		_shiftsServiceMock.Verify(s => s.UpdateAsync(shiftId, It.IsAny<Shift>()), Times.Once);
 	}
 
@@ -248,22 +242,19 @@ public class ShiftsControllerTests
 				Id = Guid.NewGuid(),
 				FirstName = "John",
 				LastName = "Doe",
-				Email = "jdoe@gmail.com"
+				Email = "jdoe@gmail.com",
 			},
 			new UserRead
 			{
 				Id = Guid.NewGuid(),
 				FirstName = "Ada",
 				LastName = "Lovelace",
-				Email = "alovelace@gmail.com"
-			}
+				Email = "alovelace@gmail.com",
+			},
 		};
-		var updateUsersResponse = new ApiResponse<Shift>
-		{
-			Success = true,
-			Message = "Users updated"
-		};
-		_shiftsServiceMock.Setup(s => s.UpdateUsersAsync(shiftId, It.IsAny<List<User>>()))
+		var updateUsersResponse = new ApiResponse<Shift> { Success = true, Message = "Users updated" };
+		_shiftsServiceMock
+			.Setup(s => s.UpdateUsersAsync(shiftId, It.IsAny<List<User>>()))
 			.ReturnsAsync(updateUsersResponse);
 
 		var result = await _shiftsController.UpdateUsers(shiftId, users);
@@ -284,29 +275,33 @@ public class ShiftsControllerTests
 				Id = Guid.NewGuid(),
 				FirstName = "John",
 				LastName = "Doe",
-				Email = "jdoe@gmail.com"
+				Email = "jdoe@gmail.com",
 			},
 			new UserRead
 			{
 				Id = Guid.NewGuid(),
 				FirstName = "Ada",
 				LastName = "Lovelace",
-				Email = "alovelace@gmail.com"
-			}
+				Email = "alovelace@gmail.com",
+			},
 		};
 		var updateUsersResponse = new ApiResponse<Shift>
 		{
 			Success = false,
-			Message = "Error in ShiftsRepository"
+			Message = "Error in ShiftsRepository",
 		};
-		_shiftsServiceMock.Setup(s => s.UpdateUsersAsync(shiftId, It.IsAny<List<User>>()))
+		_shiftsServiceMock
+			.Setup(s => s.UpdateUsersAsync(shiftId, It.IsAny<List<User>>()))
 			.ReturnsAsync(updateUsersResponse);
 
 		var result = await _shiftsController.UpdateUsers(shiftId, users);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.Value.Should().Be(updateUsersResponse.Message);
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.Value.Should()
+			.Be(updateUsersResponse.Message);
 		_shiftsServiceMock.Verify(s => s.UpdateUsersAsync(shiftId, It.IsAny<List<User>>()), Times.Once);
 	}
 
@@ -335,22 +330,23 @@ public class ShiftsControllerTests
 				IsActive = true,
 				DateCreated = DateTime.Now,
 				DateUpdated = DateTime.Now,
-			}
+			},
 		};
-		var getUsersResponse = new ApiResponse<List<User>>
-		{
-			Data = users,
-			Success = true
-		};
-		_shiftsServiceMock.Setup(s => s.GetUsersByShiftIdAsync(It.IsAny<Guid>()))
+		var getUsersResponse = new ApiResponse<List<User>> { Data = users, Success = true };
+		_shiftsServiceMock
+			.Setup(s => s.GetUsersByShiftIdAsync(It.IsAny<Guid>()))
 			.ReturnsAsync(getUsersResponse);
 
 		var result = await _shiftsController.GetUsers(shiftId);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<OkObjectResult>()
-			.Which.Value.Should().BeOfType<List<UserRead>>()
-			.Which.Should().HaveCount(2);
+		result
+			.Should()
+			.BeOfType<OkObjectResult>()
+			.Which.Value.Should()
+			.BeOfType<List<UserRead>>()
+			.Which.Should()
+			.HaveCount(2);
 		_shiftsServiceMock.Verify(s => s.GetUsersByShiftIdAsync(shiftId), Times.Once);
 	}
 
@@ -361,49 +357,58 @@ public class ShiftsControllerTests
 		var getUsersResponse = new ApiResponse<List<User>>
 		{
 			Success = false,
-			Message = "Error in ShiftsRepository"
+			Message = "Error in ShiftsRepository",
 		};
-		_shiftsServiceMock.Setup(s => s.GetUsersByShiftIdAsync(It.IsAny<Guid>()))
+		_shiftsServiceMock
+			.Setup(s => s.GetUsersByShiftIdAsync(It.IsAny<Guid>()))
 			.ReturnsAsync(getUsersResponse);
 
 		var result = await _shiftsController.GetUsers(shiftId);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.Value.Should().Be(getUsersResponse.Message);
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.Value.Should()
+			.Be(getUsersResponse.Message);
 		_shiftsServiceMock.Verify(s => s.GetUsersByShiftIdAsync(shiftId), Times.Once);
 	}
 
 	private List<Shift> GetShifts()
 	{
 		var shifts = new List<Shift>();
-		shifts.AddRange(new Shift
-		{
-			Id = Guid.NewGuid(),
-			StartTime = DateTime.Now.AddHours(2),
-			EndTime = DateTime.Now.AddHours(10),
-			IsActive = true,
-			DateCreated = DateTime.Now,
-			DateUpdated = DateTime.Now,
-		},
-		new Shift
-		{
-			Id = Guid.NewGuid(),
-			StartTime = DateTime.Now.AddHours(4),
-			EndTime = DateTime.Now.AddHours(12),
-			IsActive = true,
-			DateCreated = DateTime.Now,
-			DateUpdated = DateTime.Now,
-		});
+		shifts.AddRange(
+			new Shift
+			{
+				Id = Guid.NewGuid(),
+				StartTime = DateTime.Now.AddHours(2),
+				EndTime = DateTime.Now.AddHours(10),
+				IsActive = true,
+				DateCreated = DateTime.Now,
+				DateUpdated = DateTime.Now,
+			},
+			new Shift
+			{
+				Id = Guid.NewGuid(),
+				StartTime = DateTime.Now.AddHours(4),
+				EndTime = DateTime.Now.AddHours(12),
+				IsActive = true,
+				DateCreated = DateTime.Now,
+				DateUpdated = DateTime.Now,
+			}
+		);
 		return shifts;
 	}
 
 	private static IMapper SetUpAutomapper()
 	{
-		var config = new MapperConfiguration(cfg =>
-		{
-			cfg.AddProfile(new ControllerProfile());
-		});
+		var config = new MapperConfiguration(
+			cfg =>
+			{
+				cfg.AddProfile(new ControllerProfile());
+			},
+			NullLoggerFactory.Instance
+		);
 		var mapper = config.CreateMapper();
 		return mapper;
 	}

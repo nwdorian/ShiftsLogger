@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using ShiftsLogger.DAL;
 using ShiftsLogger.DAL.Entities;
 using ShiftsLogger.Repository;
 
 namespace ShiftsLogger.IntegrationTests.Repositories;
+
 public class ShiftsRepositoryTests
 {
 	[Fact]
@@ -115,7 +117,7 @@ public class ShiftsRepositoryTests
 			EndTime = DateTime.Now.AddHours(8),
 			IsActive = true,
 			DateCreated = DateTime.Now,
-			DateUpdated = DateTime.Now
+			DateUpdated = DateTime.Now,
 		};
 
 		var result = await shiftRepository.CreateAsync(shift);
@@ -226,7 +228,7 @@ public class ShiftsRepositoryTests
 				EndTime = DateTime.Now.AddHours(8),
 				IsActive = true,
 				DateCreated = DateTime.Now,
-				DateUpdated = DateTime.Now
+				DateUpdated = DateTime.Now,
 			},
 			new Shift
 			{
@@ -235,8 +237,8 @@ public class ShiftsRepositoryTests
 				EndTime = DateTime.Now.AddHours(10),
 				IsActive = true,
 				DateCreated = DateTime.Now,
-				DateUpdated = DateTime.Now
-			}
+				DateUpdated = DateTime.Now,
+			},
 		};
 
 		var result = await shiftRepository.CreateManyAsync(shifts);
@@ -281,7 +283,7 @@ public class ShiftsRepositoryTests
 				IsActive = true,
 				DateCreated = DateTime.Now,
 				DateUpdated = DateTime.Now,
-			}
+			},
 		};
 
 		var result = await shiftRepository.UpdateUsersAsync(shiftId, users);
@@ -313,7 +315,10 @@ public class ShiftsRepositoryTests
 		var mapper = SetUpAutomapper();
 		var shiftRepository = new ShiftRepository(dbContext, mapper);
 		var shiftId = dbContext.Shifts.First().Id;
-		var userEntities = dbContext.Shifts.Where(s => s.Id == shiftId).SelectMany(s => s.Users).ToList();
+		var userEntities = dbContext
+			.Shifts.Where(s => s.Id == shiftId)
+			.SelectMany(s => s.Users)
+			.ToList();
 		var users = mapper.Map<List<User>>(userEntities);
 
 		var result = await shiftRepository.UpdateUsersAsync(shiftId, users);
@@ -392,10 +397,13 @@ public class ShiftsRepositoryTests
 
 	private static IMapper SetUpAutomapper()
 	{
-		var config = new MapperConfiguration(cfg =>
-		{
-			cfg.AddProfile(new RepositoryProfile());
-		});
+		var config = new MapperConfiguration(
+			cfg =>
+			{
+				cfg.AddProfile(new RepositoryProfile());
+			},
+			NullLoggerFactory.Instance
+		);
 		var mapper = config.CreateMapper();
 		return mapper;
 	}
@@ -419,18 +427,20 @@ public class ShiftsRepositoryTests
 					EndTime = DateTime.Now.AddHours(8),
 					IsActive = true,
 					DateCreated = DateTime.Now,
-					DateUpdated = DateTime.Now
+					DateUpdated = DateTime.Now,
 				};
-				shift.Users.Add(new UserEntity
-				{
-					Id = Guid.NewGuid(),
-					FirstName = "John",
-					LastName = "Doe",
-					Email = "jdoe@gmail.com",
-					IsActive = true,
-					DateCreated = DateTime.Now,
-					DateUpdated = DateTime.Now
-				});
+				shift.Users.Add(
+					new UserEntity
+					{
+						Id = Guid.NewGuid(),
+						FirstName = "John",
+						LastName = "Doe",
+						Email = "jdoe@gmail.com",
+						IsActive = true,
+						DateCreated = DateTime.Now,
+						DateUpdated = DateTime.Now,
+					}
+				);
 				dbContext.Add(shift);
 			}
 			await dbContext.SaveChangesAsync();

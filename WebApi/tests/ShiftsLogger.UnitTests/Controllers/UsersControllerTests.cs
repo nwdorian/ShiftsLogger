@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 using ShiftsLogger.Service.Common;
 using ShiftsLogger.WebApi.Controllers;
 using ShiftsLogger.WebApi.RestModels;
 
 namespace ShiftsLogger.UnitTests.Controllers;
+
 public class UsersControllerTests
 {
 	private readonly UsersController _usersController;
 	private readonly Mock<IUserService> _userServiceMock;
 	private readonly IMapper _mapper;
+
 	public UsersControllerTests()
 	{
 		_userServiceMock = new Mock<IUserService>();
@@ -21,21 +24,19 @@ public class UsersControllerTests
 	public async Task GetAll_ReturnsOkWithListOfUsers_WhenServiceDataExists()
 	{
 		var users = GetUsers();
-		var getAllResponse = new ApiResponse<List<User>>
-		{
-			Data = users,
-			Success = true
-		};
-		_userServiceMock.Setup(s => s.GetAllAsync())
-			.ReturnsAsync(getAllResponse);
+		var getAllResponse = new ApiResponse<List<User>> { Data = users, Success = true };
+		_userServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(getAllResponse);
 
 		var result = await _usersController.GetAll();
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<OkObjectResult>()
-			.Which.StatusCode.Should().Be(200);
-		result.As<OkObjectResult>().Value.Should().BeOfType<List<UserRead>>()
-			.Which.Should().HaveCount(2);
+		result.Should().BeOfType<OkObjectResult>().Which.StatusCode.Should().Be(200);
+		result
+			.As<OkObjectResult>()
+			.Value.Should()
+			.BeOfType<List<UserRead>>()
+			.Which.Should()
+			.HaveCount(2);
 		_userServiceMock.Verify(s => s.GetAllAsync(), Times.Once);
 	}
 
@@ -46,16 +47,18 @@ public class UsersControllerTests
 		{
 			Data = null,
 			Success = false,
-			Message = "No users found!"
+			Message = "No users found!",
 		};
-		_userServiceMock.Setup(s => s.GetAllAsync())
-			.ReturnsAsync(getAllResponse);
+		_userServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(getAllResponse);
 
 		var result = await _usersController.GetAll();
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.StatusCode.Should().Be(400)
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.StatusCode.Should()
+			.Be(400)
 			.And.HaveValue(getAllResponse.Message);
 		_userServiceMock.Verify(s => s.GetAllAsync(), Times.Once);
 	}
@@ -64,22 +67,15 @@ public class UsersControllerTests
 	public async Task GetById_ReturnsOkWithUser_WhenUserExists()
 	{
 		var user = GetUsers().First();
-		var getByIdResponse = new ApiResponse<User>
-		{
-			Data = user,
-			Success = true,
-		};
+		var getByIdResponse = new ApiResponse<User> { Data = user, Success = true };
 		var userRead = _mapper.Map<UserRead>(user);
-		_userServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<Guid>()))
-			.ReturnsAsync(getByIdResponse);
+		_userServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(getByIdResponse);
 
 		var result = await _usersController.GetById(user.Id);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<OkObjectResult>()
-			.Which.StatusCode.Should().Be(200);
-		result.As<OkObjectResult>().Value.Should().BeOfType<UserRead>()
-			.And.BeEquivalentTo(userRead);
+		result.Should().BeOfType<OkObjectResult>().Which.StatusCode.Should().Be(200);
+		result.As<OkObjectResult>().Value.Should().BeOfType<UserRead>().And.BeEquivalentTo(userRead);
 		_userServiceMock.Verify(s => s.GetByIdAsync(user.Id), Times.Once);
 	}
 
@@ -91,16 +87,18 @@ public class UsersControllerTests
 		{
 			Data = null,
 			Success = false,
-			Message = "User doesn't exist!"
+			Message = "User doesn't exist!",
 		};
-		_userServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<Guid>()))
-			.ReturnsAsync(getByIdResponse);
+		_userServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(getByIdResponse);
 
 		var result = await _usersController.GetById(userId);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.StatusCode.Should().Be(400)
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.StatusCode.Should()
+			.Be(400)
 			.And.HaveValue(getByIdResponse.Message);
 		_userServiceMock.Verify(s => s.GetByIdAsync(userId), Times.Once);
 	}
@@ -112,22 +110,16 @@ public class UsersControllerTests
 		{
 			FirstName = "John",
 			LastName = "Doe",
-			Email = "jdoe@gmail.com"
+			Email = "jdoe@gmail.com",
 		};
 		var user = _mapper.Map<User>(userCreate);
-		var createResponse = new ApiResponse<User>
-		{
-			Data = user,
-			Success = true
-		};
-		_userServiceMock.Setup(s => s.CreateAsync(It.IsAny<User>()))
-			.ReturnsAsync(createResponse);
+		var createResponse = new ApiResponse<User> { Data = user, Success = true };
+		_userServiceMock.Setup(s => s.CreateAsync(It.IsAny<User>())).ReturnsAsync(createResponse);
 
 		var result = await _usersController.Create(userCreate);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<CreatedAtActionResult>()
-			.Which.StatusCode.Should().Be(201);
+		result.Should().BeOfType<CreatedAtActionResult>().Which.StatusCode.Should().Be(201);
 		result.As<CreatedAtActionResult>().Value.Should().BeOfType<UserRead>();
 		_userServiceMock.Verify(s => s.CreateAsync(It.IsAny<User>()), Times.Once);
 	}
@@ -139,21 +131,23 @@ public class UsersControllerTests
 		{
 			FirstName = "John",
 			LastName = "Doe",
-			Email = "jdoe@gmail.com"
+			Email = "jdoe@gmail.com",
 		};
 		var createResponse = new ApiResponse<User>
 		{
 			Success = false,
-			Message = "Error in UserRepository"
+			Message = "Error in UserRepository",
 		};
-		_userServiceMock.Setup(s => s.CreateAsync(It.IsAny<User>()))
-			.ReturnsAsync(createResponse);
+		_userServiceMock.Setup(s => s.CreateAsync(It.IsAny<User>())).ReturnsAsync(createResponse);
 
 		var result = await _usersController.Create(userCreate);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.StatusCode.Should().Be(400)
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.StatusCode.Should()
+			.Be(400)
 			.And.HaveValue(createResponse.Message);
 		_userServiceMock.Verify(s => s.CreateAsync(It.IsAny<User>()), Times.Once);
 	}
@@ -162,13 +156,8 @@ public class UsersControllerTests
 	public async Task Delete_ReturnsNoContent_WhenUserIsDeleted()
 	{
 		var userId = Guid.NewGuid();
-		var deleteResponse = new ApiResponse<User>
-		{
-			Success = true,
-			Message = "Deleted!"
-		};
-		_userServiceMock.Setup(s => s.DeleteAsync(userId))
-			.ReturnsAsync(deleteResponse);
+		var deleteResponse = new ApiResponse<User> { Success = true, Message = "Deleted!" };
+		_userServiceMock.Setup(s => s.DeleteAsync(userId)).ReturnsAsync(deleteResponse);
 
 		var result = await _usersController.Delete(userId);
 
@@ -184,16 +173,18 @@ public class UsersControllerTests
 		var deleteResponse = new ApiResponse<User>
 		{
 			Success = false,
-			Message = "Error in UserRepository"
+			Message = "Error in UserRepository",
 		};
-		_userServiceMock.Setup(s => s.DeleteAsync(userId))
-			.ReturnsAsync(deleteResponse);
+		_userServiceMock.Setup(s => s.DeleteAsync(userId)).ReturnsAsync(deleteResponse);
 
 		var result = await _usersController.Delete(userId);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.StatusCode.Should().Be(400)
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.StatusCode.Should()
+			.Be(400)
 			.And.HaveValue(deleteResponse.Message);
 		_userServiceMock.Verify(s => s.DeleteAsync(userId), Times.Once);
 	}
@@ -206,14 +197,11 @@ public class UsersControllerTests
 		{
 			FirstName = "John",
 			LastName = "Doe",
-			Email = "jdoe@gmail.com"
+			Email = "jdoe@gmail.com",
 		};
-		var updateResponse = new ApiResponse<User>
-		{
-			Success = true,
-			Message = "Updated"
-		};
-		_userServiceMock.Setup(s => s.UpdateAsync(userId, It.IsAny<User>()))
+		var updateResponse = new ApiResponse<User> { Success = true, Message = "Updated" };
+		_userServiceMock
+			.Setup(s => s.UpdateAsync(userId, It.IsAny<User>()))
 			.ReturnsAsync(updateResponse);
 
 		var result = await _usersController.Update(userId, userUpdate);
@@ -231,21 +219,25 @@ public class UsersControllerTests
 		{
 			FirstName = "John",
 			LastName = "Doe",
-			Email = "jdoe@gmail.com"
+			Email = "jdoe@gmail.com",
 		};
 		var updateResponse = new ApiResponse<User>
 		{
 			Success = false,
-			Message = "Error in UserRepository"
+			Message = "Error in UserRepository",
 		};
-		_userServiceMock.Setup(s => s.UpdateAsync(userId, It.IsAny<User>()))
+		_userServiceMock
+			.Setup(s => s.UpdateAsync(userId, It.IsAny<User>()))
 			.ReturnsAsync(updateResponse);
 
 		var result = await _usersController.Update(userId, userUpdate);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.StatusCode.Should().Be(400)
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.StatusCode.Should()
+			.Be(400)
 			.And.HaveValue(updateResponse.Message);
 		_userServiceMock.Verify(s => s.UpdateAsync(userId, It.IsAny<User>()), Times.Once);
 	}
@@ -260,21 +252,18 @@ public class UsersControllerTests
 			{
 				Id = Guid.NewGuid(),
 				StartTime = DateTime.Now,
-				EndTime = DateTime.Now.AddHours(8)
+				EndTime = DateTime.Now.AddHours(8),
 			},
 			new ShiftRead
 			{
 				Id = Guid.NewGuid(),
 				StartTime = DateTime.Now,
-				EndTime = DateTime.Now.AddHours(7)
-			}
+				EndTime = DateTime.Now.AddHours(7),
+			},
 		};
-		var updateShiftsResponse = new ApiResponse<User>
-		{
-			Success = true,
-			Message = "Shifts updated"
-		};
-		_userServiceMock.Setup(s => s.UpdateShiftsAsync(userId, It.IsAny<List<Shift>>()))
+		var updateShiftsResponse = new ApiResponse<User> { Success = true, Message = "Shifts updated" };
+		_userServiceMock
+			.Setup(s => s.UpdateShiftsAsync(userId, It.IsAny<List<Shift>>()))
 			.ReturnsAsync(updateShiftsResponse);
 
 		var result = await _usersController.UpdateShifts(userId, shiftsRead);
@@ -294,28 +283,32 @@ public class UsersControllerTests
 			{
 				Id = Guid.NewGuid(),
 				StartTime = DateTime.Now,
-				EndTime = DateTime.Now.AddHours(8)
+				EndTime = DateTime.Now.AddHours(8),
 			},
 			new ShiftRead
 			{
 				Id = Guid.NewGuid(),
 				StartTime = DateTime.Now,
-				EndTime = DateTime.Now.AddHours(7)
-			}
+				EndTime = DateTime.Now.AddHours(7),
+			},
 		};
 		var updateShiftsResponse = new ApiResponse<User>
 		{
 			Success = false,
-			Message = "Error in UserRepository"
+			Message = "Error in UserRepository",
 		};
-		_userServiceMock.Setup(s => s.UpdateShiftsAsync(userId, It.IsAny<List<Shift>>()))
+		_userServiceMock
+			.Setup(s => s.UpdateShiftsAsync(userId, It.IsAny<List<Shift>>()))
 			.ReturnsAsync(updateShiftsResponse);
 
 		var result = await _usersController.UpdateShifts(userId, shiftsRead);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.StatusCode.Should().Be(400)
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.StatusCode.Should()
+			.Be(400)
 			.And.HaveValue(updateShiftsResponse.Message);
 		_userServiceMock.Verify(s => s.UpdateShiftsAsync(userId, It.IsAny<List<Shift>>()), Times.Once);
 	}
@@ -343,23 +336,24 @@ public class UsersControllerTests
 				IsActive = true,
 				DateCreated = DateTime.Now,
 				DateUpdated = DateTime.Now,
-			}
+			},
 		};
-		var getShiftsResponse = new ApiResponse<List<Shift>>
-		{
-			Data = shifts,
-			Success = true
-		};
+		var getShiftsResponse = new ApiResponse<List<Shift>> { Data = shifts, Success = true };
 
-		_userServiceMock.Setup(s => s.GetShiftsByUserIdAsync(It.IsAny<Guid>()))
+		_userServiceMock
+			.Setup(s => s.GetShiftsByUserIdAsync(It.IsAny<Guid>()))
 			.ReturnsAsync(getShiftsResponse);
 
 		var result = await _usersController.GetShifts(userId);
 
 		result.Should().NotBeNull();
 		result.Should().BeOfType<OkObjectResult>();
-		result.As<OkObjectResult>().Value.Should().BeOfType<List<ShiftRead>>()
-			.Which.Should().HaveCount(2);
+		result
+			.As<OkObjectResult>()
+			.Value.Should()
+			.BeOfType<List<ShiftRead>>()
+			.Which.Should()
+			.HaveCount(2);
 		_userServiceMock.Verify(s => s.GetShiftsByUserIdAsync(userId), Times.Once);
 	}
 
@@ -370,17 +364,21 @@ public class UsersControllerTests
 		var getShiftsResponse = new ApiResponse<List<Shift>>
 		{
 			Success = false,
-			Message = "Error in UserRepository"
+			Message = "Error in UserRepository",
 		};
 
-		_userServiceMock.Setup(s => s.GetShiftsByUserIdAsync(It.IsAny<Guid>()))
+		_userServiceMock
+			.Setup(s => s.GetShiftsByUserIdAsync(It.IsAny<Guid>()))
 			.ReturnsAsync(getShiftsResponse);
 
 		var result = await _usersController.GetShifts(userId);
 
 		result.Should().NotBeNull();
-		result.Should().BeOfType<BadRequestObjectResult>()
-			.Which.StatusCode.Should().Be(400)
+		result
+			.Should()
+			.BeOfType<BadRequestObjectResult>()
+			.Which.StatusCode.Should()
+			.Be(400)
 			.And.HaveValue(getShiftsResponse.Message);
 		_userServiceMock.Verify(s => s.GetShiftsByUserIdAsync(userId), Times.Once);
 	}
@@ -388,39 +386,42 @@ public class UsersControllerTests
 	private static List<User> GetUsers()
 	{
 		var users = new List<User>();
-		users.AddRange(new User
-		{
-			Id = Guid.NewGuid(),
-			FirstName = "John",
-			LastName = "Doe",
-			Email = "jdoe@gmail.com",
-			IsActive = true,
-			DateCreated = DateTime.Now,
-			DateUpdated = DateTime.Now,
-		},
-		new User
-		{
-			Id = Guid.NewGuid(),
-			FirstName = "Ada",
-			LastName = "Lovelace",
-			Email = "alovelace@gmail.com",
-			IsActive = true,
-			DateCreated = DateTime.Now,
-			DateUpdated = DateTime.Now,
-		});
+		users.AddRange(
+			new User
+			{
+				Id = Guid.NewGuid(),
+				FirstName = "John",
+				LastName = "Doe",
+				Email = "jdoe@gmail.com",
+				IsActive = true,
+				DateCreated = DateTime.Now,
+				DateUpdated = DateTime.Now,
+			},
+			new User
+			{
+				Id = Guid.NewGuid(),
+				FirstName = "Ada",
+				LastName = "Lovelace",
+				Email = "alovelace@gmail.com",
+				IsActive = true,
+				DateCreated = DateTime.Now,
+				DateUpdated = DateTime.Now,
+			}
+		);
 
 		return users;
 	}
 
 	private static IMapper SetUpAutomapper()
 	{
-		var config = new MapperConfiguration(cfg =>
-		{
-			cfg.AddProfile(new ControllerProfile());
-		});
+		var config = new MapperConfiguration(
+			cfg =>
+			{
+				cfg.AddProfile(new ControllerProfile());
+			},
+			NullLoggerFactory.Instance
+		);
 		var mapper = config.CreateMapper();
 		return mapper;
 	}
 }
-
-
